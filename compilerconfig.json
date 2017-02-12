@@ -1,0 +1,14 @@
+﻿[
+  {
+    "outputFile": "public/less/sb-admin-2.css",
+    "inputFile": "public/less/sb-admin-2.less"
+  },
+  {
+    "outputFile": "public/dist/css/sb-admin-2.css",
+    "inputFile": "public/dist/css/sb-admin-2.less"
+  },
+  {
+    "outputFile": "public/bower_components/moment/moment.es5.js",
+    "inputFile": "public/bower_components/moment/moment.js"
+  }
+]

@@ -1,0 +1,165 @@
+﻿    <% layout('layout') -%>
+
+<div ng-app="wages">
+
+    <div ng-controller="main">
+        {{model}}
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 class="page-header"><i class="fa fa-money"></i> Wages</h4>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <form id="project_upsert">
+                    <fieldset>
+
+
+                        <div ng-show="model._id" class="form-group">
+                            <label for="_id"># ID</label>
+                            <input type="text" class="form-control" ng-model="model._id">
+                        </div>
+                        <div class="form-group">
+                            <label for="Name">person</label>
+                            <select class="form-control" ng-model="model.personId" ng-options="person._id as person.name for person in persons"></select>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Name">start date ( jalali ex : 1395/01/01 )</label>
+
+                            <div class="input-group">
+
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+
+                                <input type="text" class="form-control datepicker shamsi-mask"  ng-model="model.startJalali">
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Name">value (Toman)</label>
+                            <input type="text" dir="ltr" class="form-control money-input" ng-model="model.perHour ">
+                        </div>
+
+
+                        <button ng-click="save(model)" class="btn btn-sm btn-success">
+                            <i class="fa fa-save">
+                            </i>
+                            Save
+                        </button>
+                        <button ng-click="remove()" ng-show="model._id" class="btn btn-sm btn-danger">
+                            <i class="fa fa-remove">
+                            </i>
+                            Remove
+                        </button>
+
+                        <button ng-click="clear()" ng-hide="model._id" class="btn btn-sm btn-warning">
+                            <i class="fa fa-refresh">
+                            </i>
+                            Clear
+                        </button>
+                        <button ng-click="clear()" ng-show="model._id" class="btn btn-sm btn-info">
+                            <i class="fa fa-refresh">
+                            </i>
+                            Back
+                        </button>
+
+
+                    </fieldset>
+
+                </form>
+            </div>
+        </div>
+
+        <hr />
+        <div ng-hide="model._id" class="datalist">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <table id="list" class="table table-bordered table-stripped">
+
+                        <thead>
+                            <tr>
+                                <th>person</th>
+                                <th>start</th>
+                                <th>per hour</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in getPage(currentPage)">
+
+
+                                <td>
+                                    {{ getPerson( item.personId).name }}
+                                </td>
+
+                                <td>
+                                    {{ item.start   | moment: 'jYYYY/jM/jD' }}
+                                </td>
+
+                                <td>
+                                    {{ item.perHour | currency : '' : 0 }} Toman
+                                </td>
+
+
+                                <td>
+                                    <button ng-click="edit(item)" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-edit"></i>   Edit
+                                    </button>
+                                    <button ng-click="remove(item)" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-remove"></i>   Remove
+                                    </button>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+            </div>
+
+
+
+            <nav>
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <li ng-click="setPageNumber(n)" ng-class="currentPage == n ? 'active' : ''" ng-repeat="n in getPager()"><a href="#list">{{n}}</a></li>
+
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
+            <label class="">Total Items : {{ items.length }} </label>
+
+
+            <div class="row">
+                <div class="col-xs-4">
+                    <label for="pageSize">Page size</label>
+                    <input type="number" id="pageSize" class="form-control" ng-model="pageSize" />
+                </div>
+
+                <div class="col-xs-4">
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

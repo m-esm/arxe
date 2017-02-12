@@ -1,0 +1,59 @@
+<% layout('layout') %>
+
+<div  class="card"  id="profile-main">
+    <div class="pm-overview c-overflow mCustomScrollbar _mCS_3 mCS-autoHide" style="overflow: visible;"><div id="mCSB_3" class="mCustomScrollBox mCS-minimal-dark mCSB_vertical mCSB_outside" style="max-height: none;" tabindex="0"><div id="mCSB_3_container" class="mCSB_container" style="position: relative; top: 0px; left: 0px;" dir="ltr">
+
+        <div class="pmo-pic" ng-controller="accountSettings">
+            <div class="p-relative">
+                <a href="">
+                <img class="img-responsive " ng-src="{{avatar()}}"  alt="">
+
+                </a>
+
+
+                              <!--       <a href="" class="pmop-edit">
+                                        <i class="zmdi zmdi-camera"></i>
+                                        <span class="hidden-xs">Update Profile Picture</span>
+                                    </a> -->
+                                </div>
+
+
+                                <div class="pmo-stat p-t-5">
+                                 <h2>{{ model.name }}</h1> 
+                                    <h5 class=" c-black" > {{model.socials.length}} connected social account</h2>
+
+                                    </div>
+                                </div>
+
+                      <!--       <div class="pmo-block pmo-contact hidden-xs">
+                                <h2>User information</h2>
+
+                                <ul>
+                                    <li><i class="zmdi zmdi-phone"></i> 00971 12345678 9</li>
+                                    <li><i class="zmdi zmdi-email"></i> malinda-h@gmail.com</li>
+                                    <li><i class="zmdi zmdi-facebook-box"></i> malinda.hollaway</li>
+                                    <li><i class="zmdi zmdi-twitter"></i> @malinda (twitter.com/malinda)</li>
+                                    <li>
+                                        <i class="zmdi zmdi-pin"></i>
+                                        <address class="m-b-0 ng-binding">
+                                            44-46 Morningside Road,<br>
+                                            Edinburgh,<br>
+                                            Scotland
+                                        </address>
+                                    </li>
+                                </ul>
+                            </div> -->
+
+                        </div></div><div id="mCSB_3_scrollbar_vertical" class="mCSB_scrollTools mCSB_3_scrollbar mCS-minimal-dark mCSB_scrollTools_vertical" style="display: block;"><div class="mCSB_draggerContainer"><div id="mCSB_3_dragger_vertical" class="mCSB_dragger" style="position: absolute; min-height: 50px; height: 586px; top: 0px; display: block; max-height: 695px;" oncontextmenu="return false;"><div class="mCSB_dragger_bar" style="line-height: 50px;"></div></div><div class="mCSB_draggerRail"></div></div></div></div>
+
+                        <div class="pm-body clearfix">
+                            <ul class="tab-nav tn-justified">
+                                <li><a href="/account/timeline" >MY Timeline</a></li>
+                                <li><a href="/account/connections" >My Connections</a></li>
+                                <li class="active"><a href="/account/settings">My account</a></li>
+
+                            </ul>
+
+                            <%- body%>
+                        </div>
+                    </div>

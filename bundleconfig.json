@@ -1,0 +1,56 @@
+[
+  {
+    "outputFileName": "public/js/arxe-angular.min.js",
+    "inputFiles": [
+      "public/js/arxe-angular.js"
+    ]
+  },
+  {
+    "outputFileName": "public/bower_components/sweetalert/dist/sweetalert.min.css",
+    "inputFiles": [
+      "public/bower_components/sweetalert/dist/sweetalert.css"
+    ]
+  },
+  {
+    "outputFileName": "public/bower_components/moment/moment.min.js",
+    "inputFiles": [
+      "public/bower_components/moment/moment.js"
+    ]
+  },
+  {
+    "outputFileName": "public/bower_components/moment-jalaali/build/moment-jalaali.min.js",
+    "inputFiles": [
+      "public/bower_components/moment-jalaali/build/moment-jalaali.js"
+    ]
+  },
+  {
+    "outputFileName": "public/bower_components/jquery.inputmask/dist/jquery.inputmask.bundle.min.js",
+    "inputFiles": [
+      "public/bower_components/jquery.inputmask/dist/jquery.inputmask.bundle.js"
+    ]
+  },
+  {
+    "outputFileName": "public/dist/js/arxe-jquery.min.js",
+    "inputFiles": [
+      "public/dist/js/arxe-jquery.js"
+    ]
+  },
+  {
+    "outputFileName": "public/bower_components/bootstrap_persian_datetimepicker/jquery.Bootstrap-PersianDateTimePicker.min.js",
+    "inputFiles": [
+      "public/bower_components/bootstrap_persian_datetimepicker/jquery.Bootstrap-PersianDateTimePicker.js"
+    ]
+  },
+  {
+    "outputFileName": "public/bower_components/bootstrap_persian_datetimepicker/jquery.Bootstrap-PersianDateTimePicker.min.css",
+    "inputFiles": [
+      "public/bower_components/bootstrap_persian_datetimepicker/jquery.Bootstrap-PersianDateTimePicker.css"
+    ]
+  },
+  {
+    "outputFileName": "public/bower_components/bootstrap_persian_datetimepicker/calendar.min.js",
+    "inputFiles": [
+      "public/bower_components/bootstrap_persian_datetimepicker/calendar.js"
+    ]
+  }
+]

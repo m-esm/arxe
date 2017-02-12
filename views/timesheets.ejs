@@ -1,0 +1,322 @@
+    <% layout('layout') -%>
+
+    <% layout('layout') -%>
+
+<div ng-app="timesheets">
+
+    <div ng-controller="main">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 class="page-header"><i class="fa fa-calendar-o"></i> Time Sheets</h4>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        <div class="panel panel-default">
+            <div class="panel-body bg-success">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4> <i class="fa fa-edit"></i> Create / Edit</h4>
+                    </div>
+                    <div class="col-md-12">
+                        <form id="project_upsert">
+                            <fieldset>
+
+
+                                <div ng-show="model._id" class="form-group">
+                                    <label for="_id"># ID</label>
+                                    <input type="text" class="form-control" ng-model="model._id" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="Name">person</label>
+                                    <select class="form-control" ng-model="model.personId" ng-options="person._id as person.name for person in persons"></select>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Name">location</label>
+                                    <select class="form-control" ng-model="model.locationId" ng-options="location._id as location.name for location in locations"></select>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="Name">project</label>
+                                    <select class="form-control" ng-model="model.projectId" ng-options="project._id as project.name for project in projects"></select>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="report">report</label>
+                                    <textarea id="report" class="form-control" style="min-height:200px;" ng-model="model.report"></textarea>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="date">date</label>
+                                            <input type="text" id="date" class="form-control datepicker shamsi-mask" ng-model="model.dateJalali" />
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label for="start">start</label>
+                                            <input type="text" id="start" class="form-control time-mask" ng-model="model.start" />
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label for="end">end</label>
+                                            <input type="text" id="end" class="form-control time-mask" ng-model="model.end" />
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+
+                                <button ng-click="save(model)" class="btn btn-sm btn-success">
+                                    <i class="fa fa-save">
+                                    </i>
+                                    Save
+                                </button>
+                                <button ng-click="remove()" ng-show="model._id" class="btn btn-sm btn-danger">
+                                    <i class="fa fa-remove">
+                                    </i>
+                                    Remove
+                                </button>
+
+                                <button ng-click="clear()" ng-hide="model._id" class="btn btn-sm btn-warning">
+                                    <i class="fa fa-refresh">
+                                    </i>
+                                    Clear
+                                </button>
+                                <button ng-click="clear()" ng-show="model._id" class="btn btn-sm btn-info">
+                                    <i class="fa fa-refresh">
+                                    </i>
+                                    Back
+                                </button>
+
+
+                            </fieldset>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        <div ng-hide="model._id" class="datalist">
+
+            <div class="panel panel-default">
+                <div class="panel-body  bg-info">
+
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4> <i class="fa fa-search"></i> Search data list</h4>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="Name">person</label>
+                            <select class="form-control" ng-model="search.personId" ng-options="person._id as person.name for person in persons"></select>
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="Name">location</label>
+                            <select class="form-control" ng-model="search.locationId" ng-options="location._id as location.name for location in locations"></select>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <label for="Name">project</label>
+                            <select class="form-control" ng-model="search.projectId" ng-options="project._id as project.name for project in projects"></select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>start date</label>
+                            <input type="text" class="form-control datepicker shamsi-mask" ng-model="search.startDate" />
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>end date</label>
+                            <input type="text" class="form-control datepicker shamsi-mask" ng-model="search.endDate" />
+
+
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <br />
+
+                            <!--<button ng-hide="!real_items" ng-click="search_items()" class="btn btn-sm btn-success">
+                                <i class="fa fa-search"></i>
+                                Again
+                            </button>-->
+
+
+                            <button ng-hide="real_items" ng-click="search_items()" class="btn btn-sm btn-success">
+                                <i class="fa fa-search"></i>
+                                Search
+                            </button>
+
+                            <button ng-show="real_items" ng-click="cancel_search()" class="btn btn-sm btn-danger">
+                                <i class="fa fa-close"></i>
+                                Cancel
+                            </button>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <div class="panel panel-default">
+                <div class="panel-body bg-gray">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4> <i class="fa fa-info"></i> Brief analytics <small>in filtered data</small></h4>
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                Total salary
+                            </label>
+                            <input type="text" class="form-control" disabled value="{{analytics.totalSalary | currency :'T ' : 0}}" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                Total paid salary
+                            </label>
+                            <input type="text" class="form-control" disabled value="{{analytics.totalPaidSalary  | currency :'T ' : 0}}" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                Total unpaid salary
+                            </label>
+                            <input type="text" class="form-control" disabled value="{{analytics.totalUnpaidSalary  | currency :'T ' : 0}}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-body bg-success">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4> <i class="fa fa-list"></i> Data list</h4>
+                        </div>
+                        <div class="col-md-12">
+
+                            <table id="list" class="table table-bordered table-stripped bg-info">
+
+                                <thead>
+                                    <tr>
+                                        <th>person</th>
+                                        <th>project</th>
+                                        <th>location</th>
+                                        <th>date</th>
+                                        <th>time</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                    <tr ng-repeat="item in getPage(currentPage)">
+
+
+                                        <td>
+                                            {{ getPerson(item.personId).name }}
+                                        </td>
+
+                                        <td>
+                                            {{ getProject(item.projectId).name }}
+                                        </td>
+
+                                        <td>
+                                            {{ getLocation(item.locationId).name }}
+                                        </td>
+
+                                        <td>
+                                            {{ item.date   | moment: 'jYYYY/jM/jD' }}
+
+
+                                        </td>
+
+
+                                        <td>
+                                            {{getTime(item).hours}} hour(s) and {{getTime(item).mins}} min(s)
+                                         
+                                            
+                                        </td>
+
+
+
+
+                                        <td>
+                                            <button ng-click="edit(item)" class="btn btn-sm btn-primary">
+                                                <i class="fa fa-edit"></i>   Edit / Show
+                                            </button>
+                                            <button ng-click="remove(item)" class="btn btn-sm btn-danger">
+                                                <i class="fa fa-remove"></i>   Remove
+                                            </button>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+
+                        </div>
+                    </div>
+
+
+
+                    <nav>
+                        <ul class="pagination">
+                            <li>
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+
+                            <li ng-click="setPageNumber(n)" ng-class="currentPage == n ? 'active' : ''" ng-repeat="n in getPager()"><a href="#list">{{n}}</a></li>
+
+                            <li>
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </nav>
+                    <label class="">Total Items : {{ items.length }} </label>
+
+
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="pageSize">Page size</label>
+                            <input type="number" id="pageSize" class="form-control" ng-model="pageSize" />
+                        </div>
+
+                        <div class="col-xs-4">
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

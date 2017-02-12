@@ -1,0 +1,112 @@
+  <% layout('account/account_layout')%>
+  
+  <div ng-controller="accountSettings">
+
+    <div class="pmb-block">
+        <div class="pmbb-header">
+            <h2><i class="zmdi zmdi-account m-r-10"></i> Basic Information</h2>
+            <ul class="actions">
+                <li class="dropdown">
+                    <a href="" data-toggle="dropdown">
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>
+                            <a data-ma-action="profile-edit" href="">Edit</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="pmbb-body p-l-30">
+            <div class="pmbb-view">
+                <dl class="dl-horizontal">
+                    <dt>Email </dt>
+                    <dd>{{model.email}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Full Name </dt>
+                    <dd>{{model.name}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Phone </dt>
+                    <dd>{{model.phone}}</dd>
+                </dl>
+            </div>
+
+            <div class="pmbb-edit">
+
+              <dl class="dl-horizontal">
+                <dt class="p-t-10">Email </dt>
+                <dd>
+                    <div class="fg-line">
+                        <input type="text" disabled='disabled' class="form-control" ng-model='model.email'>
+                    </div>
+
+                </dd>
+            </dl>
+
+            <dl class="dl-horizontal">
+                <dt class="p-t-10">Full Name</dt>
+                <dd>
+                    <div class="fg-line">
+                        <input type="text" required class="form-control" ng-model='model.name' placeholder="">
+                    </div>
+
+                </dd>
+            </dl>
+
+            <dl class="dl-horizontal">
+                <dt class="p-t-10">Phone</dt>
+                <dd>
+                    <div class="fg-line">
+                        <input type="text" class="form-control" ng-model='model.phone' placeholder="EX : +98 912 111 22 33">
+                    </div>
+
+                </dd>
+            </dl>
+
+
+            <div class="m-t-30">
+                <button class="btn btn-default btn-sm waves-effect">Save</button>
+                <button data-ma-action="profile-edit-cancel" class="btn btn-link btn-sm waves-effect">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pmb-block">
+    <div class="pmbb-header">
+        <h2><i class="zmdi zmdi-phone m-r-10"></i>Social Accounts</h2>
+
+    </div>
+    <div class="pmbb-body p-l-30">
+        <div class="pmbb-view" ng-repeat="social in model.socials">
+
+         <div class='m-5'>
+
+             <img ng-if="social.socialName == 'facebook'" style='height: 40px' class='pull-left m-r-10' src="/img/social/facebook-128.png" />
+             <img ng-if="social.socialName == 'instagram'" style='height: 40px' class='pull-left m-r-10' src="/img/social/instagram-128.png" />
+             <img ng-if="social.socialName == 'twitter'" style='height: 40px' class='pull-left m-r-10' src="/img/social/twitter-128.png" />
+             <img ng-if="social.socialName == 'linkedin'" style='height: 40px' class='pull-left m-r-10' src="/img/social/linkedin-128.png" />
+
+             <p class='pull-left m-0' >
+                #{{ social.profileId }}<br />
+                {{ social.profileName }}<br />
+                {{ social.profileEmail }}<br />
+
+            </p>
+
+            <a ng-click="DeleteSocial(social)"> <i class="zmdi zmdi-delete pull-right f-20" ></i> </a>
+
+            <div class="clearfix"></div>
+        </div>
+        <hr />
+    </div>
+
+
+</div>
+</div>
+
+</div>
