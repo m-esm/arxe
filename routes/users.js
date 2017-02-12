@@ -87,6 +87,9 @@ router.post('/users/login',
         var redirectTo = req.session.redirectTo ? req.session.redirectTo : '/';
         delete req.session.redirectTo;
         // is authenticated ?
+
+     
+        
         res.redirect(redirectTo);
 
     });

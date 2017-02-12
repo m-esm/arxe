@@ -1,7 +1,7 @@
 {
-  "name": "analytika",
+  "name": "arxe",
   "version": "1.0.0",
-  "description": "Social media monitoring and publishing system + dashboard",
+  "description": "small erp",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

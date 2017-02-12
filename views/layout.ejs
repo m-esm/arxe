@@ -98,10 +98,13 @@
                         <li>
                             <a href="/projects"><i class="fa fa-angle-right"></i> Projects</a>
                         </li>
+
+
+                        <% if(user.role == 'admin') { %>
+
                         <li>
                             <a href="/locations"><i class="fa fa-angle-right"></i> Locations</a>
                         </li>
-
 
                         <li>
                             <a href="/wages"><i class="fa fa-angle-right"></i> Wages</a>
@@ -117,6 +120,11 @@
                         <li>
                             <a href="/users"><i class="fa fa-angle-right"></i> Users</a>
                         </li>
+
+
+                        <% } %>
+
+
 
 
 

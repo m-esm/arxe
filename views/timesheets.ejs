@@ -189,13 +189,16 @@
                             </label>
                             <input type="text" class="form-control" disabled value="{{analytics.totalSalary | currency :'T ' : 0}}" />
                         </div>
-                        <div class="col-md-4">
+
+                        <div ng-hide="search.startDate || search.endDate" class="col-md-4">
                             <label>
                                 Total paid salary
                             </label>
                             <input type="text" class="form-control" disabled value="{{analytics.totalPaidSalary  | currency :'T ' : 0}}" />
                         </div>
-                        <div class="col-md-4">
+
+                        <div ng-hide="search.startDate || search.endDate" class="col-md-4">
+
                             <label>
                                 Total unpaid salary
                             </label>

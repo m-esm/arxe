@@ -224,6 +224,49 @@ locationsApp.controller('main', function ($scope, $http) {
 });
 /// locations APP  \\\\\\\\\\\\\\\\\\\\
 
+/// locations APP
+var fundsApp = angular.module('funds', []);
+fundsApp.controller('main', function ($scope, $http) {
+    use_pager($scope);
+    use_persons($scope, $http);
+    use_projects($scope, $http);
+    use_curd($scope, $http, '/api/funds');
+
+    $scope.getPerson = function (_id) {
+        return _.findWhere($scope.persons, { _id: _id });
+    };
+    $scope.getProject = function (_id) {
+        return _.findWhere($scope.projects, { _id: _id });
+    };
+
+
+    $scope.$watch('model.dateJalali', function (newVal, oldVal) {
+
+        if (newVal)
+            $scope.model.date = moment(newVal, 'jYYYY/jMM/jDD').format('YYYY/MM/DD');
+
+    });
+
+
+    $scope.edit = function (model) {
+        $scope.model = model;
+        $scope.model.dateJalali = moment($scope.model.date).format('jYYYY/jMM/jDD');
+    };
+
+    $scope.clear = function () {
+        $scope.model = {
+            dateJalali: moment().format('jYYYY/jMM/jDD'),
+            date: moment().format('YYYY/MM/DD'),
+        };
+    };
+
+    $scope.clear();
+
+});
+/// locations APP  \\\\\\\\\\\\\\\\\\\\
+
+
+
 
 /// wages APP
 var wagesApp = angular.module('wages', []);
@@ -311,14 +354,14 @@ timesheetsApp.controller('main', function ($scope, $http) {
     $scope.getPerson = function (_id) {
         return _.findWhere($scope.persons, { _id: _id });
     };
+    $scope.getProject = function (_id) {
+        return _.findWhere($scope.projects, { _id: _id });
+    };
 
     $scope.getLocation = function (_id) {
         return _.findWhere($scope.locations, { _id: _id });
     };
 
-    $scope.getProject = function (_id) {
-        return _.findWhere($scope.projects, { _id: _id });
-    };
 
     $scope.analytics = {
         totalSalary: 0,
@@ -334,6 +377,8 @@ timesheetsApp.controller('main', function ($scope, $http) {
             date: moment().format('YYYY/MM/DD'),
         };
     };
+
+    $scope.clear();
 
     $scope.$watch('items', function (newVal) {
 
@@ -357,7 +402,6 @@ timesheetsApp.controller('main', function ($scope, $http) {
 
     });
 
-    $scope.clear();
 
     $scope.$watch('model.dateJalali', function (newVal, oldVal) {
 

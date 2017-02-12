@@ -2,6 +2,12 @@
 var FundSchema = mongoose.Schema({
     _id: { type: String }
     ,
+    date: {
+        type: Date
+    },
+    dateJalali: {
+        type: String
+    },
     price: {
         type: Number
     },
@@ -11,7 +17,7 @@ var FundSchema = mongoose.Schema({
     projectId: {
         type: String
     },
-    text: {
+    description: {
         type: String
     }
 }, {

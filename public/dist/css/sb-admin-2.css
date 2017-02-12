@@ -2,6 +2,11 @@
   background-color: #f8f8f8;
   font-family: 'Segoe UI';
 }
+.select-one {
+  text-align: center;
+  font-weight: bold;
+  cursor: default;
+}
 .bg-gray {
   background: #dedede;
 }
