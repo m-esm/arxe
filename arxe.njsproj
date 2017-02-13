@@ -956,6 +956,8 @@
     <Compile Include="rest-apis\arxe.js" />
     <Compile Include="routes\dashboard.js" />
     <Compile Include="routes\users.js" />
+    <Content Include="README.md" />
+    <Content Include="screenshot.jpg" />
     <Content Include="views\auth.ejs" />
     <Content Include="views\flash.ejs" />
     <Content Include="views\fund.ejs" />
