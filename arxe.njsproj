@@ -968,8 +968,6 @@
     <Content Include="views\layout.ejs" />
     <Compile Include="public\data\flot-data.js" />
     <Compile Include="public\data\morris-data.js" />
-    <Content Include="public\pages2\blank.html" />
-    <Content Include="public\pages2\buttons.html" />
     <Content Include="public\pages2\flot.html" />
     <Content Include="public\pages2\forms.html" />
     <Content Include="public\pages2\grid.html" />
@@ -1164,7 +1162,6 @@
     <Folder Include="public\dist\css" />
     <Folder Include="public\dist\js" />
     <Folder Include="public\less\" />
-    <Folder Include="public\pages2" />
     <Folder Include="rest-apis" />
     <Folder Include="routes" />
     <Folder Include="views" />

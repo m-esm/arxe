@@ -1,2 +1,0 @@
-D:\Projects\arxe\obj\Debug\arxe.njsprojResolveAssemblyReference.cache
-D:\Projects\arxe\bin\Microsoft.NodejsTools.WebRole.dll
