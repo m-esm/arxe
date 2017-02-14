@@ -481,6 +481,13 @@
     <Content Include="public\bower_components\holderjs\test\.gitignore" />
     <Content Include="public\bower_components\holderjs\test\image.jpg" />
     <Content Include="public\bower_components\holderjs\test\index.html" />
+    <Content Include="public\bower_components\jquery-toast-plugin\.bower.json" />
+    <Content Include="public\bower_components\jquery-toast-plugin\bower.json" />
+    <Content Include="public\bower_components\jquery-toast-plugin\demos\css\jquery.toast.css" />
+    <Content Include="public\bower_components\jquery-toast-plugin\demos\index.html" />
+    <Content Include="public\bower_components\jquery-toast-plugin\dist\jquery.toast.min.css" />
+    <Content Include="public\bower_components\jquery-toast-plugin\package.json" />
+    <Content Include="public\bower_components\jquery-toast-plugin\src\jquery.toast.css" />
     <Content Include="public\bower_components\jquery\.bower.json" />
     <Content Include="public\bower_components\jquery\AUTHORS.txt" />
     <Content Include="public\bower_components\jquery\bower.json" />
@@ -599,6 +606,11 @@
     <Content Include="public\bower_components\raphael\yarn.lock" />
     <Content Include="public\bower_components\sweetalert\dist\sweetalert.css" />
     <Content Include="public\bower_components\sweetalert\dist\sweetalert.min.css" />
+    <Content Include="public\bower_components\underscore\.bower.json" />
+    <Content Include="public\bower_components\underscore\bower.json" />
+    <Content Include="public\bower_components\underscore\LICENSE" />
+    <Content Include="public\bower_components\underscore\README.md" />
+    <Content Include="public\bower_components\underscore\underscore-min.map" />
     <Content Include="public\dist\css\mixins.less" />
     <Content Include="public\dist\css\sb-admin-2.css">
       <SubType>Content</SubType>
@@ -607,12 +619,7 @@
     <Content Include="public\dist\css\sb-admin-2.less" />
     <Content Include="public\dist\css\sb-admin-2.min.css" />
     <Content Include="public\dist\css\variables.less" />
-    <Content Include="public\less\sb-admin-2.min.css">
-      <SubType>Content</SubType>
-      <DependentUpon>public\less\sb-admin-2.css</DependentUpon>
-    </Content>
     <Content Include="public\package.json" />
-    <Content Include="public\README.md" />
     <Compile Include="public\bower_components\angular\angular.js" />
     <Compile Include="public\bower_components\angular\angular.min.js" />
     <Compile Include="public\bower_components\angular\index.js" />
@@ -791,6 +798,9 @@
     <Compile Include="public\bower_components\holderjs\src\holder.js" />
     <Compile Include="public\bower_components\holderjs\src\ondomready.js" />
     <Compile Include="public\bower_components\holderjs\src\polyfills.js" />
+    <Compile Include="public\bower_components\jquery-toast-plugin\demos\js\jquery.toast.js" />
+    <Compile Include="public\bower_components\jquery-toast-plugin\dist\jquery.toast.min.js" />
+    <Compile Include="public\bower_components\jquery-toast-plugin\src\jquery.toast.js" />
     <Compile Include="public\bower_components\jquery.inputmask\dist\jquery.inputmask.bundle.js" />
     <Compile Include="public\bower_components\jquery.inputmask\dist\jquery.inputmask.bundle.min.js">
       <SubType>Code</SubType>
@@ -945,6 +955,8 @@
     <Compile Include="public\bower_components\raphael\raphael.no-deps.js" />
     <Compile Include="public\bower_components\raphael\raphael.no-deps.min.js" />
     <Compile Include="public\bower_components\raphael\webpack.config.js" />
+    <Compile Include="public\bower_components\underscore\underscore-min.js" />
+    <Compile Include="public\bower_components\underscore\underscore.js" />
     <Compile Include="public\dist\js\arxe-jquery.min.js">
       <SubType>Code</SubType>
       <DependentUpon>public\dist\js\arxe-jquery.js</DependentUpon>
@@ -970,7 +982,6 @@
     <Content Include="views\layout.ejs" />
     <Compile Include="public\data\flot-data.js" />
     <Compile Include="public\data\morris-data.js" />
-    <Content Include="public\pages2\flot.html" />
     <Content Include="public\pages2\forms.html" />
     <Content Include="public\pages2\grid.html" />
     <Content Include="public\pages2\icons.html" />
@@ -1092,6 +1103,12 @@
     <Folder Include="public\bower_components\holderjs\" />
     <Folder Include="public\bower_components\holderjs\src\" />
     <Folder Include="public\bower_components\holderjs\test\" />
+    <Folder Include="public\bower_components\jquery-toast-plugin\" />
+    <Folder Include="public\bower_components\jquery-toast-plugin\demos\" />
+    <Folder Include="public\bower_components\jquery-toast-plugin\demos\css\" />
+    <Folder Include="public\bower_components\jquery-toast-plugin\demos\js\" />
+    <Folder Include="public\bower_components\jquery-toast-plugin\dist\" />
+    <Folder Include="public\bower_components\jquery-toast-plugin\src\" />
     <Folder Include="public\bower_components\jquery.inputmask\" />
     <Folder Include="public\bower_components\jquery.inputmask\dist\" />
     <Folder Include="public\bower_components\jquery\" />
@@ -1159,11 +1176,11 @@
     <Folder Include="public\bower_components\raphael\dev\test\vml\" />
     <Folder Include="public\bower_components\sweetalert\" />
     <Folder Include="public\bower_components\sweetalert\dist\" />
+    <Folder Include="public\bower_components\underscore\" />
     <Folder Include="public\data" />
     <Folder Include="public\dist" />
     <Folder Include="public\dist\css" />
     <Folder Include="public\dist\js" />
-    <Folder Include="public\less\" />
     <Folder Include="rest-apis" />
     <Folder Include="routes" />
     <Folder Include="views" />

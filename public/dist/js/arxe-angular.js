@@ -212,6 +212,51 @@ var usersApp = angular.module('users', []);
 usersApp.controller('main', function ($scope, $http) {
     use_pager($scope);
     use_curd($scope, $http, '/api/users');
+
+ 
+
+    $scope.changePassword = function (item) {
+
+        swal({
+            title: "Change Password",
+            text: "Write new password for " + item.name ,
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "new password",
+            inputType: 'password'
+        },
+            function (inputValue) {
+                if (inputValue === false) return false;
+
+                if (inputValue === "") {
+                    swal.showInputError("You need to write something!");
+                    return false;
+                }
+
+                $http.post('/api/account/reset_pw', {
+                    userId: item._id,
+                    newPass: inputValue
+                }).then(function (res) {
+
+                    if (res.status == 200)
+                        swal({
+                            title: 'password changed !',
+                            type: 'success'
+                        });
+                    else
+                        swal({
+                            title: 'something went wrong !',
+                            type: 'error'
+                        });
+                });
+          
+            });
+
+    
+
+    };
 });
 /// users APP  \\\\\\\\\\\\\\\\\\\\
 

@@ -12,7 +12,15 @@ passport.use(new LocalStrategy(
 			if(err) throw err;
 			if(!user){
 				return done(null, false, 'Unknown User' );
-			}
+            }
+
+            if (user.role == undefined || user.role == '') {
+             
+                return done(null, false, 'Please wait for confirmation or contact admin . ');
+
+            }
+            
+
 
 			User.comparePassword(password, user.password, function(err, isMatch){
 				

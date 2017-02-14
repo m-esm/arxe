@@ -96,6 +96,9 @@
 
                                 <td>
                                     {{ getPerson( item.personId).name }}
+                                    <span class="text-danger" ng-hide="getPerson( item.personId)">
+                                    Deleted user id : {{item.personId}}
+                                    </span>
                                 </td>
 
                                 <td>

@@ -12,7 +12,10 @@ router.get('/users/register', function (req, res) {
 
 // Login
 router.get('/users/login', function (req, res) {
-    res.render('auth', { title :'Login', auth_type: 'login' });
+    if (req.user != undefined)
+        return res.redirect('/');
+    res.render('auth', { title: 'Login', auth_type: 'login' });
+
 });
 
 
@@ -53,7 +56,8 @@ router.post('/users/register', function (req, res) {
                     name: name,
                     email: email,
                     username: email,
-                    password: password
+                    password: password,
+                    role : ''
                 });
 
                 User.createUser(newUser, function (err2, user) {

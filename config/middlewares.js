@@ -4,12 +4,7 @@ var _ = require("underscore");
 var ensureAuthenticated = function (req, res, next) {
     if (req.isAuthenticated()) {
      
-        if (req.user.role == undefined || req.user.role == '')
-        {
-            req.flash('error_msg','Please wait for confirmation or contact admin . ');
-            res.redirect('/users/login');
-        }
-        else
+ 
             return next();
 
     } else {

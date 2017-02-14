@@ -23,5 +23,20 @@ Its nodeJs application written on expressJs .
 
 </ul>
 
+<h3>How to use </h3>
+<p> run app , register user and change role to 'admin' to get access .
+<br>
+    ### you can use robomongo for easier access to mongodb !
+ </p>
+
+ <code>
+npm install <br>
+</code>
+
+<code>
+node app.js
+</code>
+
+
 <h3> Screen shots </h3>
 <img src="https://raw.githubusercontent.com/m-esm/arxe/master/screenshot.jpg" />

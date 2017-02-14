@@ -82,53 +82,61 @@
         <hr />
         <div ng-hide="model._id" class="datalist">
             <div class="row">
-            <div class="col-md-12">
+                <div class="col-md-12">
 
-            <table id="list" class="table table-bordered table-stripped">
+                    <table id="list" class="table table-bordered table-stripped">
 
-            <thead>
-            <tr>
-            <th>name</th>
-            <th>username</th>
-            <th>phone</th>
-            <th>role</th>
-            <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="item in getPage(currentPage)">
+                        <thead>
+                            <tr>
+                                <th>name</th>
+                                <th>username</th>
+                                <th>phone</th>
+                                <th>role</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in getPage(currentPage)">
 
-            <td>
-            {{ item.name }}
-            </td>
+                                <td>
+                                    {{ item.name }}
+                                </td>
 
-            <td>
-            {{ item.username }}
-            </td>
+                                <td>
+                                    {{ item.username }}
+                                </td>
 
-            <td>
-            {{ item.phone }}
-            </td>
+                                <td>
+                                    {{ item.phone }}
+                                </td>
 
-            <td>
-            {{ item.role }}
-            </td>
-            <td>
-            <button ng-click="edit(item)" class="btn btn-sm btn-primary">
-            <i class="fa fa-edit"></i>   Edit
-            </button>
-            <button ng-click="remove(item)" class="btn btn-sm btn-danger">
-            <i class="fa fa-remove"></i>   Remove
-            </button>
-            </td>
+                                <td>
+                                    {{ item.role }}
 
-            </tr>
-            </tbody>
-            </table>
+                                    <span ng-hide="item.role" class="text-danger">
+                                        need to confirm
+                                    </span>
+
+                                </td>
+                                <td>
+                                    <button ng-click="edit(item)" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-edit"></i>   Edit
+                                    </button>
+                                    <button ng-click="remove(item)" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-remove"></i>   Remove
+                                    </button>
+                                    <button ng-click="changePassword(item)" class="btn btn-sm btn-default">
+                                        <i class="fa fa-lock"></i>   Change password
+                                    </button>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
 
 
 
-            </div>
+                </div>
             </div>
 
 

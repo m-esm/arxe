@@ -1,5 +1,45 @@
 $(document).ready(function () {
 
+    $('#resetPw').click(function () {
+
+        swal({
+            title: "Change Password",
+            text: "Write new password",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "new password",
+            inputType: 'password'
+        },
+            function (inputValue) {
+                if (inputValue === false) return false;
+
+                if (inputValue === "") {
+                    swal.showInputError("You need to write something!");
+                    return false;
+                }
+
+                $.post('/api/account/reset_pw', {
+                    newPass: inputValue
+                }).done(function (res) {
+
+                    swal({
+                        title: 'password changed !',
+                        type: 'success'
+                    });
+
+                    }).fail(function () {
+                    swal({
+                        title: 'something went wrong !',
+                        type: 'error'
+                    });
+                });
+
+            });
+
+    });
+
     $('input.money-input').inputmask("decimal", {
         radixPoint: ",",
         autoGroup: true,
@@ -23,7 +63,7 @@ $(document).ready(function () {
 });
 
 
-$(function() {
+$(function () {
     $('#side-menu').metisMenu();
 });
 
@@ -32,8 +72,8 @@ $(function() {
 //Loads the correct sidebar on window load,
 //collapses the sidebar on window resize.
 // Sets the min-height of #page-wrapper to window size
-$(function() {
-    $(window).bind("load resize", function() {
+$(function () {
+    $(window).bind("load resize", function () {
         var topOffset = 50;
         var width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
         if (width < 768) {
@@ -55,7 +95,7 @@ $(function() {
     // var element = $('ul.nav a').filter(function() {
     //     return this.href == url;
     // }).addClass('active').parent().parent().addClass('in').parent();
-    var element = $('ul.nav a').filter(function() {
+    var element = $('ul.nav a').filter(function () {
         return this.href == url;
     }).addClass('active').parent();
 
