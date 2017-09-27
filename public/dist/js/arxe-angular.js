@@ -2,6 +2,7 @@
     var target = this;
     return target.replace(new RegExp(search, 'g'), replacement);
 };
+
 Array.prototype.max = function (mx) {
     return this.filter(function (e, i) { return i < mx; });
 };
@@ -149,30 +150,54 @@ var use_curd = function ($scope, $http, api_prefix) {
     };
     $scope.remove = function (model) {
 
-        console.log(model);
+        var detailsList = $('<div style="text-align:left;" class="detailslist"><b>You will not be able to recover this :</b></div>');
+
+        _.keys(model).forEach(function (key, index) {
+            var value = model[key];
+
+            if (key.endsWith("Id")) {
+
+                key = key.replace("Id", "");
+                value = _.findWhere($scope[key + "s"], { _id: value }).name;
+            }
+
+
+            detailsList.append("<div><b>" + key + " :</b><i> " + value + "</i></div>");
+        });
+
 
         swal({
             title: "Are you sure?",
-            text: "You will not be able to recover .",
+            text: " <br /> " + detailsList[0].outerHTML,
             type: "warning",
+            html: true,
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
             confirmButtonText: "Yes, delete it!",
             closeOnConfirm: true
         },
-            function () {
+            function (isConfirm) {
 
-                $http.post(api_prefix + '/remove', model).then(function (res) {
+                console.log("isconfirm", isConfirm);
+
+                if (isConfirm) {
 
 
-                    $scope.items = _.filter($scope.items, function (item) {
-                        return item._id != model._id;
+
+                    $http.post(api_prefix + '/remove', model).then(function (res) {
+
+
+                        $scope.items = _.filter($scope.items, function (item) {
+
+                            return item._id != model._id;
+
+                        });
+
+                        $scope.clear();
+
                     });
 
-                    $scope.clear();
-
-
-                });
+                }
 
             });
 
@@ -205,21 +230,19 @@ projectsApp.controller('main', function ($scope, $http) {
 /// Projects APP  \\\\\\\\\\\\\\\\\\\\
 
 
-
-
 /// users APP
 var usersApp = angular.module('users', []);
 usersApp.controller('main', function ($scope, $http) {
     use_pager($scope);
     use_curd($scope, $http, '/api/users');
 
- 
+
 
     $scope.changePassword = function (item) {
 
         swal({
             title: "Change Password",
-            text: "Write new password for " + item.name ,
+            text: "Write new password for " + item.name,
             type: "input",
             showCancelButton: true,
             closeOnConfirm: false,
@@ -251,10 +274,10 @@ usersApp.controller('main', function ($scope, $http) {
                             type: 'error'
                         });
                 });
-          
+
             });
 
-    
+
 
     };
 });
@@ -303,14 +326,13 @@ fundsApp.controller('main', function ($scope, $http) {
             dateJalali: moment().format('jYYYY/jMM/jDD'),
             date: moment().format('YYYY/MM/DD'),
         };
+
     };
 
     $scope.clear();
 
 });
 /// locations APP  \\\\\\\\\\\\\\\\\\\\
-
-
 
 
 /// wages APP
@@ -417,24 +439,58 @@ timesheetsApp.controller('main', function ($scope, $http) {
 
 
     $scope.clear = function () {
+
         $scope.model = {
             dateJalali: moment().format('jYYYY/jMM/jDD'),
             date: moment().format('YYYY/MM/DD'),
+            personId: $scope.user._id
         };
+
+        console.log($scope.model);
+
+        setTimeout(function () {
+            $scope.$apply();
+        }, 1);
+
+
+
     };
 
-    $scope.clear();
+    $http.get('/api/user').then(function (res) {
+        $scope.user = res.data;
+        $scope.clear();
+    });
+
 
     $scope.$watch('items', function (newVal) {
 
+        $scope.totalHours = _.reduce($scope.items, function (memo, item) {
+            return memo + time_diffrence(item.start, item.end).totalHour;
+        }, 0);
 
+        $scope.totalPersonalHours = _.reduce($scope.items, function (memo, item) {
 
+            if (!item.personal)
+                return memo;
+
+            if (item.personal.indexOf(':') == -1)
+                return memo;
+
+            console.log(item.personal);
+
+            return memo + time_diffrence('00:00', item.personal).totalHour;
+
+        }, 0);
+
+    
         var postData = _.map($scope.items, function (item) {
             return item._id;
         });
 
         if (postData.length == 0)
             return;
+
+     
 
         $http.post('/api/analytics/salary', postData).then(function (res) {
 
@@ -444,6 +500,10 @@ timesheetsApp.controller('main', function ($scope, $http) {
             console.error('error getting salary analyticks', res);
         });
 
+
+        setTimeout(function () {
+            $scope.$apply();
+        }, 2);
 
     });
 
@@ -466,7 +526,7 @@ timesheetsApp.controller('main', function ($scope, $http) {
 
         if ($scope.real_items == false || $scope.real_items == undefined)
             $scope.real_items = $scope.items;
-   
+
 
 
         $scope.items = _.filter($scope.items, function (item) {
@@ -484,7 +544,7 @@ timesheetsApp.controller('main', function ($scope, $http) {
                 if ((item_date_jalali - parseInt($scope.search.endDate.replaceAll('/', ''))) > 0)
                     return false;
 
-
+            
 
             if ($scope.search.locationId != undefined)
                 if ($scope.search.locationId != item.locationId)
@@ -498,6 +558,8 @@ timesheetsApp.controller('main', function ($scope, $http) {
                 if ($scope.search.personId != item.personId)
                     return false;
 
+            if ($scope.search.personal)
+                return item.personal;
 
             return true;
 
@@ -518,7 +580,3 @@ timesheetsApp.controller('main', function ($scope, $http) {
 });
 
 /// timesheets APP\\\\\\\\\\\\\\\\\\\\
-
-
-
-

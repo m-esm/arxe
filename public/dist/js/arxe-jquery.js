@@ -1,5 +1,13 @@
+var user = {};
+$(function () {
+    $.get('/api/user', function (res) {
+        console.log(res);
+        user = res;
+    });
+});
 $(document).ready(function () {
 
+    
     $('#resetPw').click(function () {
 
         swal({

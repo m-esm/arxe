@@ -82,6 +82,10 @@ app.use(function (req, res, next) {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
+
+    if (req.user)
+        req.user._id = '"' + req.user._id + '"';
+
     res.locals.user = req.user || null;
     res.locals.title = '';
     next();
@@ -92,6 +96,38 @@ app.use('/', require('./routes/dashboard'));
 app.use('/', require('./routes/users'));
 app.use('/', require('./rest-apis/arxe'));
 app.use('/', require('./rest-apis/account'));
+
+
+app.get('/json', function (req, res) {
+
+    res.set('Content-Type', 'text/html');
+
+    res.write('<form enctype="application/json" method="post"><textarea style="width:100%;height:500px;" name="data"></textarea><input type="submit" /></form>');
+
+    res.end();
+
+});
+
+
+app.post('/json', function (req, res) {
+
+    var fs = require('fs');
+
+    var posts = JSON.parse(req.body.data).posts.data;
+    var textToWrite = "";
+    posts.forEach(function (item, index) {
+        textToWrite += item.full_picture + "\n";
+    });
+
+    fs.writeFile(req.query.file + '.txt', textToWrite, function(err) {
+        if (err) throw err;
+        res.write('saved to ' + req.query.file + '.txt');
+        res.end();
+    });
+
+    
+
+});
 
 // Set Port
 app.set('port', (process.env.PORT || 8080));

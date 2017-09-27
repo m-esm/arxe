@@ -9,6 +9,8 @@ var Location = require('../models/location');
 var Wage = require('../models/wage');
 var Timesheet = require('../models/timesheet');
 var Fund = require('../models/fund');
+var Trash = require('../models/trash');
+var moment = require('moment');
 
 String.prototype.replaceAll = function (search, replacement) {
     var target = this;
@@ -47,8 +49,6 @@ var time_diffrence = function (start, end) {
 
 };
 
-
-
 router.get('/api/users', middles.authorize, function (req, res) {
 
     var query = {};
@@ -64,10 +64,20 @@ router.get('/api/users', middles.authorize, function (req, res) {
     });
 
 });
+
+router.get('/api/user', middles.authorize, function (req, res) {
+
+    res.json(req.user);
+
+});
+
+
 router.post('/api/users/remove', middles.authorize, function (req, res) {
 
     if (req.user.role != 'admin')
         res.status('403', 'no access honey ;)');
+
+    Trash.create({ from: 'user', user : req.user, model: req.body });
 
     User.findOneAndRemove(req.body._id, function (err, model) {
 
@@ -104,19 +114,17 @@ router.post('/api/users/upsert', middles.authorize, function (req, res) {
 
 
 router.get('/api/projects', middles.authorize, function (req, res) {
-
     Project.find({}, function (err, data) {
-
         res.json(data);
-
     });
-
-
 });
+
 router.post('/api/projects/remove', middles.authorize, function (req, res) {
 
     if (req.user.role != 'admin')
         res.status('403', 'no access honey ;)');
+
+    Trash.create({ from: 'project', user: req.user, model: req.body });
 
     Project.findOneAndRemove(req.body._id, function (err, model) {
 
@@ -166,6 +174,7 @@ router.post('/api/funds/remove', middles.authorize, function (req, res) {
 
     if (req.user.role != 'admin')
         res.status('403', 'no access honey ;)');
+    Trash.create({ from: 'fund', user: req.user, model: req.body });
 
     Fund.findOneAndRemove(req.body._id, function (err, model) {
 
@@ -212,6 +221,11 @@ router.get('/api/locations', middles.authorize, function (req, res) {
 
 });
 router.post('/api/locations/remove', middles.authorize, function (req, res) {
+
+    if (req.user.role != 'admin')
+        res.status('403', 'no access honey ;)');
+
+    Trash.create({ from: 'location', user: req.user, model: req.body });
 
     Location.findOneAndRemove(req.body._id, function (err, model) {
 
@@ -260,6 +274,9 @@ router.get('/api/wages', middles.authorize, function (req, res) {
 router.post('/api/wages/remove', middles.authorize, function (req, res) {
     if (req.user.role != 'admin')
         res.status('403', 'no access honey ;)');
+
+    Trash.create({ from: 'wage', user: req.user, model: req.body });
+
     Wage.findOneAndRemove(req.body._id, function (err, model) {
 
         if (err)
@@ -301,13 +318,21 @@ router.get('/api/timesheets', middles.authorize, function (req, res) {
 
     Timesheet.find(query, function (err, data) {
 
-        res.json(data);
+        data = _.sortBy(data, function (item) {
+            return moment(item.date).format('x');
+        });
 
+        data = data.reverse();
+
+        res.json(data);
     });
 
-
 });
+
+
 router.post('/api/timesheets/remove', middles.authorize, function (req, res) {
+
+    Trash.create({ from: 'timesheet', user: req.user, model: req.body });
 
     Timesheet.findOneAndRemove(req.body._id, function (err, model) {
 
@@ -325,6 +350,9 @@ router.post('/api/timesheets/upsert', middles.authorize, function (req, res) {
 
     if (!req.body._id)
         req.body._id = new mongoose.mongo.ObjectID();
+
+    if (req.body.personal)
+        req.body = _.omit(req.body, "projectId");
 
     Timesheet.findOneAndUpdate({ _id: req.body._id }, { $set: _.omit(req.body, ["_id", '__v']) }, { upsert: true, 'new': true }, function (err, model) {
 
@@ -384,6 +412,8 @@ router.post('/api/analytics/salary', middles.authorize, function (req, res) {
             },
 
             function (err, timeSheets) {
+
+                timeSheets = _.where(timeSheets, { personal: false });
 
                 var timeSheetsPerUser = _.groupBy(timeSheets, 'personId');
 

@@ -39,8 +39,15 @@
 
 
                                 <div class="form-group">
-                                    <label for="Name">project</label>
-                                    <select class="form-control" ng-model="model.projectId" ng-options="project._id as project.name for project in projects"></select>
+                                    <div class="row">
+
+
+                                        <div class="col-md-8">
+                                            <label>project</label>
+                                            <select class="form-control" ng-model="model.projectId" ng-options="project._id as project.name for project in projects"></select>
+                                        </div>
+
+                                    </div>
                                 </div>
 
 
@@ -49,6 +56,12 @@
                                     <textarea id="report" class="form-control" style="min-height:200px;" ng-model="model.report"></textarea>
                                 </div>
 
+                                <div class="form-group">
+
+                                    <label for="personal">Personal time :</label>
+                                    <input type="text" id="personal" class="form-control time-mask" ng-model="model.personal" />
+
+                                </div>
 
                                 <div class="form-group">
                                     <div class="row">
@@ -117,22 +130,24 @@
                             <h4> <i class="fa fa-search"></i> Search data list</h4>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="Name">person</label>
                             <select class="form-control" ng-model="search.personId" ng-options="person._id as person.name for person in persons"></select>
 
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="Name">location</label>
                             <select class="form-control" ng-model="search.locationId" ng-options="location._id as location.name for location in locations"></select>
                         </div>
 
-
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="Name">project</label>
-                            <select class="form-control" ng-model="search.projectId" ng-options="project._id as project.name for project in projects"></select>
+                            <select class="form-control" ng-disabled="search.personal" ng-model="search.projectId" ng-options="project._id as project.name for project in projects"></select>
                         </div>
+
+                     
+
 
                         <div class="col-md-6">
                             <label>start date</label>
@@ -210,10 +225,13 @@
 
 
             <div class="panel panel-default">
-                <div class="panel-body bg-success">
+                <div class="panel-body bg-gray">
                     <div class="row">
                         <div class="col-md-12">
                             <h4> <i class="fa fa-list"></i> Data list</h4>
+                            <div>
+                                <i>Total hours for this list : {{totalHours}} and total personal hours : {{totalPersonalHours}} </i>
+                            </div>
                         </div>
                         <div class="col-md-12">
 
@@ -235,44 +253,43 @@
                                     <tr ng-repeat="item in getPage(currentPage)">
 
 
-                                        <td>
-                                            {{ getPerson(item.personId).name }}
-                                        </td>
+                                <td>
+                                    {{ getPerson(item.personId).name }}
+                                </td>
 
-                                        <td>
-                                            {{ getProject(item.projectId).name }}
-                                        </td>
+                                <td>
 
-                                        <td>
-                                            {{ getLocation(item.locationId).name }}
-                                        </td>
+                                    {{ item.personal ? 'Personal' : getProject(item.projectId).name }}
+                                </td>
 
-                                        <td>
-                                            {{ item.date   | moment: 'jYYYY/jM/jD' }}
+                                <td>
+                                    {{ getLocation(item.locationId).name }}
+                                </td>
 
-
-                                        </td>
+                                <td>
+                                    {{ item.date   | moment: 'jYYYY/jM/jD' }}
 
 
-                                        <td>
-                                            {{getTime(item).hours}} hour(s) and {{getTime(item).mins}} min(s)
-                                         
-                                            
-                                        </td>
+                                </td>
 
+
+                                <td>
+                                    {{getTime(item).hours}} hour(s) and {{getTime(item).mins}} min(s)
+                                </td>
 
 
 
-                                        <td>
-                                            <button ng-click="edit(item)" class="btn btn-sm btn-primary">
-                                                <i class="fa fa-edit"></i>   Edit / Show
-                                            </button>
-                                            <button ng-click="remove(item)" class="btn btn-sm btn-danger">
-                                                <i class="fa fa-remove"></i>   Remove
-                                            </button>
-                                        </td>
 
-                                    </tr>
+                                <td>
+                                    <button ng-click="edit(item)" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-edit"></i>   Edit / Show
+                                    </button>
+                                    <button ng-click="remove(item)" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-remove"></i>   Remove
+                                    </button>
+                                </td>
+
+                                </tr>
                                 </tbody>
                             </table>
 

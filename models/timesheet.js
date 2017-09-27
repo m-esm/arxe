@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+
 var timeSheetSchema = mongoose.Schema({
 
 	personId : {type : String},
@@ -8,7 +9,9 @@ var timeSheetSchema = mongoose.Schema({
     date: { type: Date },
     start: { type: String },
     end: { type: String },
-
+    personal: {
+        type: String
+    }
 
 },{
 	collection : 'Timesheets',

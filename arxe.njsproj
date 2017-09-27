@@ -1181,10 +1181,32 @@
     <Folder Include="public\dist" />
     <Folder Include="public\dist\css" />
     <Folder Include="public\dist\js" />
+    <Folder Include="public\pages2\" />
     <Folder Include="rest-apis" />
     <Folder Include="routes" />
+    <Folder Include="typings\" />
+    <Folder Include="typings\globals\" />
+    <Folder Include="typings\globals\connect-flash\" />
+    <Folder Include="typings\globals\express-session\" />
+    <Folder Include="typings\globals\express-validator\" />
+    <Folder Include="typings\globals\moment\" />
+    <Folder Include="typings\globals\mongoose\" />
+    <Folder Include="typings\globals\node\" />
+    <Folder Include="typings\globals\passport\" />
+    <Folder Include="typings\globals\underscore\" />
     <Folder Include="views" />
     <Folder Include="views\account" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="typings\globals\connect-flash\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\express-session\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\express-validator\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\moment\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\mongoose\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\node\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\passport\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\underscore\index.d.ts" />
+    <TypeScriptCompile Include="typings\index.d.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->

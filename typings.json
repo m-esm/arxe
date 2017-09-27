@@ -1,0 +1,12 @@
+{
+  "globalDependencies": {
+    "connect-flash": "registry:dt/connect-flash#0.0.0+20160721174308",
+    "express-session": "registry:dt/express-session#0.0.0+20161119044246",
+    "express-validator": "registry:dt/express-validator#2.20.4+20160818215330",
+    "moment": "registry:dt/moment#2.11.1+20161010105546",
+    "mongoose": "registry:dt/mongoose#4.7.0+20170322192047",
+    "node": "registry:dt/node#7.0.0+20170322231424",
+    "passport": "registry:dt/passport#0.3.0+20170207191958",
+    "underscore": "registry:dt/underscore#1.8.3+20161123125004"
+  }
+}

@@ -8,6 +8,12 @@ a {
 .navbar-header {
   width: 100%;
 }
+.bg-info {
+  background: #d3e9f3;
+}
+.bg-warn {
+  background: #f5e299;
+}
 .select-one {
   text-align: center;
   font-weight: bold;
