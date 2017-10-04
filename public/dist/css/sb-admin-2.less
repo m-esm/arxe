@@ -1,57 +1,112 @@
 @import "variables.less";
 @import "mixins.less";
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 
 // Global Styles
 
 body {
     background-color: @gray-lightest;
-    font-family:'Segoe UI';
+    font-family: 'Roboto', sans-serif;
+    background-image: url('../img/bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 100vh;
 }
 
-a{
-    cursor:pointer;
-}
-.navbar-header{
-    width:100%;
-}
-
-.bg-success{
-
-}
-.bg-info{
-    background:#d3e9f3;
-}
-.bg-warn{
-   background:#f5e299;
+.panel-default, .panel {
+    background: rgba(221, 221, 221, 0.4);
+    box-shadow: 0 0 40px #000;
+    border-color: transparent;
+    border-radius: 5px;
 }
 
-.select-one{
+.page-header {
+    background: rgba(238, 238, 238, 0.8);
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 40px #000;
+    border-bottom: none;
+}
+
+.table-bordered {
+    border-top: 1px solid #a9a9a9;
+    margin-top:10px;
+}
+
+.table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+    border: 1px solid #a9a9a9;
+}
+
+.panel-heading {
+    background-color: rgba(245, 245, 245, 0.4) !important;
+}
+
+a {
+    cursor: pointer;
+    color: #fff;
+}
+
+.navbar-header {
+    width: 100%;
+}
+
+.bg-success {
+    background-color: rgba(223, 240, 216, 0.5);
+}
+
+.bg-info {
+    background: rgba(211, 233, 243, 0.5);
+}
+
+.bg-warn {
+    background: rgba(245, 226, 153, 0.5);
+}
+
+.select-one {
+    text-align: center;
+    font-weight: bold;
+    cursor: default;
+}
+.footer-center{
     text-align:center;
-   font-weight:bold;
-  cursor:default;
-}
-.bg-gray{
-    background:#dedede;
+    padding:20px 0;
+    label{
+        display:block;}
+    input{
+        width:200px;
+        margin:0 auto;
+        }
+
+    }
+.bg-gray {
+    background: rgba(234, 234, 234, 0.8);
 }
 // Wrappers
+
+.pagination{
+  margin: 0 20px;
+    }
 
 #wrapper {
     width: 100%;
 }
 
-.navbar-brand,.navbar-default .navbar-brand{
-    font-weight:bold;
-    color:#000;
+.navbar-brand, .navbar-default .navbar-brand {
+    color: #fff;
 
+    &:hover {
+        color: #fff;
+    }
 }
-.navbar-default{
+
+.navbar-default {
     border-bottom: 1px solid #999;
-
+    background: rgba(221, 221, 221, 0.3);
 }
+
 #page-wrapper {
     padding: 0 15px;
     min-height: 568px;
-    background-color: white;
 }
 
 @media(min-width:768px) {
@@ -119,17 +174,19 @@ a{
 .navbar-top-links .dropdown-alerts {
     margin-left: -123px;
 }
-.page-header{
-    border-bottom:1px solid #ccc;
+
+.page-header {
+    border-bottom: 1px solid #ccc;
 }
+
 .navbar-top-links .dropdown-user {
     right: 0;
     left: auto;
 }
 
-hr{
-    border-bottom:1px solid #ccc;
-    margin-bottom:10px;
+hr {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
 }
 // --Sidebar
 
@@ -146,18 +203,26 @@ hr{
 
 .sidebar ul li {
     border-bottom: 1px solid #ddd;
+
     a {
-            font-weight:500;
-            i{
-                font-size:15px;
-                font-weight:bold;
-                color:#333;
-            }
+        font-weight: 500;
+        color: #fff;
+
+        i {
+            font-size: 15px;
+            font-weight: bold;
+            color: #eee;
+        }
+
         &.active {
-            background-color: @gray-lighter;
-            font-weight:bold;
+            background-color: rgba(238, 238, 238, 0.2);
+            font-weight: bold;
         }
     }
+}
+
+.nav > li > a:focus, .nav > li > a:hover {
+    background: none;
 }
 
 .sidebar .arrow {
@@ -319,7 +384,7 @@ table.dataTable thead .sorting:after {
     color: rgba(50,50,50,.5);
 }
 
-// Circle Buttons 
+// Circle Buttons
 
 .btn-circle {
     width: 30px;
@@ -355,7 +420,6 @@ table.dataTable thead .sorting:after {
     padding-top: 10px;
     padding-bottom: 10px;
     border: 1px solid #ddd;
-    background-color: #eee !important;
 }
 
 .show-grid {
@@ -370,13 +434,16 @@ table.dataTable thead .sorting:after {
 
 .panel-green {
     border-color: @brand-success;
+
     > .panel-heading {
         border-color: @brand-success;
         color: white;
         background-color: @brand-success;
     }
+
     > a {
         color: @brand-success;
+
         &:hover {
             color: darken(@brand-success, 15%);
         }
@@ -385,13 +452,16 @@ table.dataTable thead .sorting:after {
 
 .panel-red {
     border-color: @brand-danger;
+
     > .panel-heading {
         border-color: @brand-danger;
         color: white;
         background-color: @brand-danger;
     }
+
     > a {
         color: @brand-danger;
+
         &:hover {
             color: darken(@brand-danger, 15%);
         }
@@ -400,13 +470,16 @@ table.dataTable thead .sorting:after {
 
 .panel-yellow {
     border-color: @brand-warning;
+
     > .panel-heading {
         border-color: @brand-warning;
         color: white;
         background-color: @brand-warning;
     }
+
     > a {
         color: @brand-warning;
+
         &:hover {
             color: darken(@brand-warning, 15%);
         }

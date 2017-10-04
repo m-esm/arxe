@@ -1,15 +1,17 @@
     <% layout('layout') -%>
 
-<div ng-app="locations">
+<div class="row">
+    <div class="col-lg-12">
+        <h4 class="page-header"><i class="fa fa-industry"></i> Work Locations</h4>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
 
-    <div ng-controller="main">
+<div ng-app="locations" class="panel bg-gray">
 
-        <div class="row">
-            <div class="col-lg-12">
-                <h4 class="page-header"><i class="fa fa-industry"></i> Work Locations</h4>
-            </div>
-            <!-- /.col-lg-12 -->
-        </div>
+    <div ng-controller="main" class="panel-body">
+
+     
         <!-- /.row -->
         <div class="row">
             <div class="col-md-12">
@@ -110,7 +112,7 @@
 
 
 
-            <nav>
+            <nav class="footer-center">
                 <ul class="pagination">
                     <li>
                         <a href="#" aria-label="Previous">
@@ -127,20 +129,19 @@
                     </li>
                 </ul>
 
+
+                <label class="">Total Items : {{ items.length }} </label>
+
+
+                
+                        <label for="pageSize">Page size</label>
+                        <input type="number" id="pageSize" class="form-control" ng-model="pageSize" />
+                 
+
+                   
+
+             
             </nav>
-            <label class="">Total Items : {{ items.length }} </label>
-
-
-            <div class="row">
-                <div class="col-xs-4">
-                    <label for="pageSize">Page size</label>
-                    <input type="number" id="pageSize" class="form-control" ng-model="pageSize" />
-                </div>
-
-                <div class="col-xs-4">
-                </div>
-
-            </div>
         </div>
 
     </div>

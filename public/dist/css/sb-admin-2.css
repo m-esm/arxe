@@ -1,42 +1,97 @@
-﻿body {
+﻿@import url('https://fonts.googleapis.com/css?family=Roboto');
+body {
   background-color: #f8f8f8;
-  font-family: 'Segoe UI';
+  font-family: 'Roboto', sans-serif;
+  background-image: url('../img/bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+.panel-default,
+.panel {
+  background: rgba(221, 221, 221, 0.4);
+  box-shadow: 0 0 40px #000;
+  border-color: transparent;
+  border-radius: 5px;
+}
+.page-header {
+  background: rgba(238, 238, 238, 0.8);
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 40px #000;
+  border-bottom: none;
+}
+.table-bordered {
+  border-top: 1px solid #a9a9a9;
+  margin-top: 10px;
+}
+.table-bordered > tbody > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > thead > tr > th {
+  border: 1px solid #a9a9a9;
+}
+.panel-heading {
+  background-color: rgba(245, 245, 245, 0.4) !important;
 }
 a {
   cursor: pointer;
+  color: #fff;
 }
 .navbar-header {
   width: 100%;
 }
+.bg-success {
+  background-color: rgba(223, 240, 216, 0.5);
+}
 .bg-info {
-  background: #d3e9f3;
+  background: rgba(211, 233, 243, 0.5);
 }
 .bg-warn {
-  background: #f5e299;
+  background: rgba(245, 226, 153, 0.5);
 }
 .select-one {
   text-align: center;
   font-weight: bold;
   cursor: default;
 }
+.footer-center {
+  text-align: center;
+  padding: 20px 0;
+}
+.footer-center label {
+  display: block;
+}
+.footer-center input {
+  width: 200px;
+  margin: 0 auto;
+}
 .bg-gray {
-  background: #dedede;
+  background: rgba(234, 234, 234, 0.8);
+}
+.pagination {
+  margin: 0 20px;
 }
 #wrapper {
   width: 100%;
 }
 .navbar-brand,
 .navbar-default .navbar-brand {
-  font-weight: bold;
-  color: #000;
+  color: #fff;
+}
+.navbar-brand:hover,
+.navbar-default .navbar-brand:hover {
+  color: #fff;
 }
 .navbar-default {
   border-bottom: 1px solid #999;
+  background: rgba(221, 221, 221, 0.3);
 }
 #page-wrapper {
   padding: 0 15px;
   min-height: 568px;
-  background-color: white;
 }
 @media (min-width: 768px) {
   #page-wrapper {
@@ -110,15 +165,20 @@ hr {
 }
 .sidebar ul li a {
   font-weight: 500;
+  color: #fff;
 }
 .sidebar ul li a i {
   font-size: 15px;
   font-weight: bold;
-  color: #333;
+  color: #eee;
 }
 .sidebar ul li a.active {
-  background-color: #eeeeee;
+  background-color: rgba(238, 238, 238, 0.2);
   font-weight: bold;
+}
+.nav > li > a:focus,
+.nav > li > a:hover {
+  background: none;
 }
 .sidebar .arrow {
   float: right;
@@ -269,7 +329,6 @@ table.dataTable thead .sorting:after {
   padding-top: 10px;
   padding-bottom: 10px;
   border: 1px solid #ddd;
-  background-color: #eee !important;
 }
 .show-grid {
   margin: 15px 0;

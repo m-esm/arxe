@@ -27,13 +27,13 @@
                                     <input type="text" class="form-control" ng-model="model._id" />
                                 </div>
                                 <div class="form-group">
-                                    <label for="Name">person</label>
+                                    <label for="Name">Person</label>
                                     <select class="form-control" ng-model="model.personId" ng-options="person._id as person.name for person in persons"></select>
 
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="Name">location</label>
+                                    <label for="Name">Location</label>
                                     <select class="form-control" ng-model="model.locationId" ng-options="location._id as location.name for location in locations"></select>
                                 </div>
 
@@ -43,7 +43,7 @@
 
 
                                         <div class="col-md-8">
-                                            <label>project</label>
+                                            <label>Project</label>
                                             <select class="form-control" ng-model="model.projectId" ng-options="project._id as project.name for project in projects"></select>
                                         </div>
 
@@ -52,7 +52,7 @@
 
 
                                 <div class="form-group">
-                                    <label for="report">report</label>
+                                    <label for="report">Report</label>
                                     <textarea id="report" class="form-control" style="min-height:200px;" ng-model="model.report"></textarea>
                                 </div>
 
@@ -66,17 +66,17 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="date">date</label>
+                                            <label for="date">Date</label>
                                             <input type="text" id="date" class="form-control datepicker shamsi-mask" ng-model="model.dateJalali" />
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label for="start">start</label>
+                                            <label for="start">Start</label>
                                             <input type="text" id="start" class="form-control time-mask" ng-model="model.start" />
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label for="end">end</label>
+                                            <label for="end">End</label>
                                             <input type="text" id="end" class="form-control time-mask" ng-model="model.end" />
                                         </div>
                                     </div>
@@ -91,7 +91,7 @@
                                     </i>
                                     Save
                                 </button>
-                                <button ng-click="remove()" ng-show="model._id" class="btn btn-sm btn-danger">
+                                <button ng-click="remove(model)" ng-show="model._id" class="btn btn-sm btn-danger">
                                     <i class="fa fa-remove">
                                     </i>
                                     Remove
@@ -235,15 +235,15 @@
                         </div>
                         <div class="col-md-12">
 
-                            <table id="list" class="table table-bordered table-stripped bg-info">
+                            <table id="list" class="table table-bordered table-stripped">
 
                                 <thead>
                                     <tr>
-                                        <th>person</th>
-                                        <th>project</th>
-                                        <th>location</th>
-                                        <th>date</th>
-                                        <th>time</th>
+                                        <th>Person</th>
+                                        <th>Project</th>
+                                        <th>Location</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -259,7 +259,7 @@
 
                                 <td>
 
-                                    {{ item.personal ? 'Personal' : getProject(item.projectId).name }}
+                                    {{  getProject(item.projectId).name }}
                                 </td>
 
                                 <td>
@@ -274,7 +274,7 @@
 
 
                                 <td>
-                                    {{getTime(item).hours}} hour(s) and {{getTime(item).mins}} min(s)
+                                    {{getWorkingTime(item).hours}} hour(s) and {{getWorkingTime(item).mins}} min(s)
                                 </td>
 
 
@@ -282,10 +282,10 @@
 
                                 <td>
                                     <button ng-click="edit(item)" class="btn btn-sm btn-primary">
-                                        <i class="fa fa-edit"></i>   Edit / Show
+                                        <i class="fa fa-edit"></i> 
                                     </button>
                                     <button ng-click="remove(item)" class="btn btn-sm btn-danger">
-                                        <i class="fa fa-remove"></i>   Remove
+                                        <i class="fa fa-remove"></i> 
                                     </button>
                                 </td>
 
@@ -300,7 +300,7 @@
 
 
 
-                    <nav>
+                    <nav class="footer-center">
                         <ul class="pagination">
                             <li>
                                 <a href="#" aria-label="Previous">
@@ -317,20 +317,22 @@
                             </li>
                         </ul>
 
+
+                        <label class="">Total Items : {{ items.length }} </label>
+
+
+                        <div class="row">
+                            <div class="">
+                                <label for="pageSize">Page size</label>
+                                <input type="number" id="pageSize" class="form-control" ng-model="pageSize" />
+                            </div>
+
+                   
+
+                        </div>
+
                     </nav>
-                    <label class="">Total Items : {{ items.length }} </label>
 
-
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <label for="pageSize">Page size</label>
-                            <input type="number" id="pageSize" class="form-control" ng-model="pageSize" />
-                        </div>
-
-                        <div class="col-xs-4">
-                        </div>
-
-                    </div>
                 </div>
 
             </div>

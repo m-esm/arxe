@@ -12,6 +12,23 @@ var Fund = require('../models/fund');
 var Trash = require('../models/trash');
 var moment = require('moment');
 
+if (!String.prototype.padStart) {
+    String.prototype.padStart = function padStart(targetLength, padString) {
+        targetLength = targetLength >> 0; //floor if number or convert non-number to 0;
+        padString = String(padString || '0');
+        if (this.length > targetLength) {
+            return String(this);
+        }
+        else {
+            targetLength = targetLength - this.length;
+            if (targetLength > padString.length) {
+                padString += padString.repeat(targetLength / padString.length); //append to original to ensure we are longer than needed
+            }
+            return padString.slice(0, targetLength) + String(this);
+        }
+    };
+}
+
 String.prototype.replaceAll = function (search, replacement) {
     var target = this;
     return target.replace(new RegExp(search, 'g'), replacement);
@@ -77,9 +94,9 @@ router.post('/api/users/remove', middles.authorize, function (req, res) {
     if (req.user.role != 'admin')
         res.status('403', 'no access honey ;)');
 
-    Trash.create({ from: 'user', user : req.user, model: req.body });
+    Trash.create({ from: 'user', user: req.user, model: req.body });
 
-    User.findOneAndRemove(req.body._id, function (err, model) {
+    User.findByIdAndRemove(req.body._id, function (err, model) {
 
         if (err)
             throw err;
@@ -126,7 +143,7 @@ router.post('/api/projects/remove', middles.authorize, function (req, res) {
 
     Trash.create({ from: 'project', user: req.user, model: req.body });
 
-    Project.findOneAndRemove(req.body._id, function (err, model) {
+    Project.findByIdAndRemove(req.body._id, function (err, model) {
 
         if (err)
             throw err;
@@ -176,7 +193,7 @@ router.post('/api/funds/remove', middles.authorize, function (req, res) {
         res.status('403', 'no access honey ;)');
     Trash.create({ from: 'fund', user: req.user, model: req.body });
 
-    Fund.findOneAndRemove(req.body._id, function (err, model) {
+    Fund.findByIdAndRemove(req.body._id, function (err, model) {
 
         if (err)
             throw err;
@@ -227,7 +244,7 @@ router.post('/api/locations/remove', middles.authorize, function (req, res) {
 
     Trash.create({ from: 'location', user: req.user, model: req.body });
 
-    Location.findOneAndRemove(req.body._id, function (err, model) {
+    Location.findByIdAndRemove(req.body._id, function (err, model) {
 
         if (err)
             throw err;
@@ -277,7 +294,7 @@ router.post('/api/wages/remove', middles.authorize, function (req, res) {
 
     Trash.create({ from: 'wage', user: req.user, model: req.body });
 
-    Wage.findOneAndRemove(req.body._id, function (err, model) {
+    Wage.findByIdAndRemove(req.body._id, function (err, model) {
 
         if (err)
             throw err;
@@ -333,8 +350,7 @@ router.get('/api/timesheets', middles.authorize, function (req, res) {
 router.post('/api/timesheets/remove', middles.authorize, function (req, res) {
 
     Trash.create({ from: 'timesheet', user: req.user, model: req.body });
-
-    Timesheet.findOneAndRemove(req.body._id, function (err, model) {
+    Timesheet.findByIdAndRemove(req.body._id, function (err, model) {
 
         if (err)
             throw err;
@@ -413,9 +429,10 @@ router.post('/api/analytics/salary', middles.authorize, function (req, res) {
 
             function (err, timeSheets) {
 
-                timeSheets = _.where(timeSheets, { personal: false });
+                timeSheets = _.where(timeSheets);
 
                 var timeSheetsPerUser = _.groupBy(timeSheets, 'personId');
+
 
 
                 _.keys(timeSheetsPerUser).forEach(function (personId, tsUserIndex) {
@@ -441,37 +458,55 @@ router.post('/api/analytics/salary', middles.authorize, function (req, res) {
                         if (ts.dateJalali == undefined)
                             return;
 
-                        var tsJalaliNumber = parseInt(ts.dateJalali.replaceAll('/', ''));
+                        var temp = ts.dateJalali.toString().replace('d', '').split('/');
+                        ts.dateJalali = "";
+                        temp.forEach(function (part, partIndex) {
+                            ts.dateJalali += part.trim().padStart(2, 0);
+                        });
 
-                        var userWage = _.min(_.where(_wages, {
+                        //    console.log(' ts.dateJalali', ts.dateJalali);
+                        var tsJalaliNumber = parseInt(ts.dateJalali);
+
+
+                        var userWages = _.map(_.where(_wages, {
                             personId: ts.personId
-                        }), function (_w) {
+                        }), function (item) {
+                            item.startJalali = item.startJalali.replace('d', '');
+                            return item;
+                        });
 
-                            _w = _w.toObject();
-                            if (_w.startJalali == undefined)
-                                return false;
+                        var userWage = _.min(userWages, function (item) {
 
-                            _w.startJalaliNumber = parseInt(_w.startJalali.toString().replaceAll('/', ''));
+                            var temp2 = item.startJalali.toString().split('/');
+                            item.startJalali = "";
+                            temp2.forEach(function (part, partIndex) {
+                                item.startJalali += part.padStart(2, 0);
+                            });
 
 
-
-                            if (tsJalaliNumber - _w.startJalaliNumber >= 0)
-                                return tsJalaliNumber - _w.startJalaliNumber;
+                            return tsJalaliNumber - parseInt(item.startJalali);
 
                         });
+
 
                         var location = _.find(_locations, {
                             _id: ts.locationId
                         });
 
-                        _userSalary = (userWage.perHour + location.plusCost) * time_diffrence(ts.start, ts.end).totalHour;
+                        if (!ts.personal)
+                            ts.personal = '00:00';
+
+                        var workingTime = time_diffrence(ts.start, ts.end).totalHour - time_diffrence('00:00', ts.personal).totalHour;
+
+
+                        if (userWage.perHour)
+                            analytics.totalSalary += (userWage.perHour + location.plusCost) * workingTime;
 
 
 
-                        analytics.totalSalary += _userSalary;
+                        console.log(analytics, userWage.perHour, location.plusCost, workingTime);
 
                     });
-
 
 
                 });
@@ -499,13 +534,6 @@ router.post('/api/analytics/salary', middles.authorize, function (req, res) {
 
         });
     });
-
-
-
-
-
-
-
 
 
 

@@ -165,6 +165,8 @@ var use_curd = function ($scope, $http, api_prefix) {
             detailsList.append("<div><b>" + key + " :</b><i> " + value + "</i></div>");
         });
 
+        console.log(model);
+
 
         swal({
             title: "Are you sure?",
@@ -185,7 +187,6 @@ var use_curd = function ($scope, $http, api_prefix) {
 
 
                     $http.post(api_prefix + '/remove', model).then(function (res) {
-
 
                         $scope.items = _.filter($scope.items, function (item) {
 
@@ -418,6 +419,19 @@ timesheetsApp.controller('main', function ($scope, $http) {
         return time_diffrence(item.start, item.end);
     };
 
+    $scope.getWorkingTime = function (item) {
+        var totalWorking = time_diffrence(item.start, item.end).totalHour - time_diffrence('00:00', item.personal).totalHour;
+        return $scope.toTimeObj(totalWorking);
+
+    };
+
+    $scope.toTimeObj = function (totalHours) {
+        return {
+            hours: parseInt(totalHours),
+            mins: parseInt((totalHours - parseInt(totalHours)) * 60)
+        };
+    };
+
     $scope.getPerson = function (_id) {
         return _.findWhere($scope.persons, { _id: _id });
     };
@@ -464,8 +478,20 @@ timesheetsApp.controller('main', function ($scope, $http) {
 
     $scope.$watch('items', function (newVal) {
 
+
+
         $scope.totalHours = _.reduce($scope.items, function (memo, item) {
-            return memo + time_diffrence(item.start, item.end).totalHour;
+
+
+            if (!item.personal)
+                item.personal = '00:00';
+            else
+                item.personal = item.personal.toString();
+
+            if (item.personal.indexOf(':') == -1)
+                item.personal = '00:00';
+
+            return memo + (time_diffrence(item.start, item.end).totalHour - time_diffrence('00:00', item.personal).totalHour);
         }, 0);
 
         $scope.totalPersonalHours = _.reduce($scope.items, function (memo, item) {
@@ -482,7 +508,7 @@ timesheetsApp.controller('main', function ($scope, $http) {
 
         }, 0);
 
-    
+
         var postData = _.map($scope.items, function (item) {
             return item._id;
         });
@@ -490,7 +516,7 @@ timesheetsApp.controller('main', function ($scope, $http) {
         if (postData.length == 0)
             return;
 
-     
+
 
         $http.post('/api/analytics/salary', postData).then(function (res) {
 
@@ -544,7 +570,7 @@ timesheetsApp.controller('main', function ($scope, $http) {
                 if ((item_date_jalali - parseInt($scope.search.endDate.replaceAll('/', ''))) > 0)
                     return false;
 
-            
+
 
             if ($scope.search.locationId != undefined)
                 if ($scope.search.locationId != item.locationId)

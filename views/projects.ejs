@@ -10,112 +10,112 @@
             <!-- /.col-lg-12 -->
         </div>
         <!-- /.row -->
-        <div class="row">
-            <div class="col-md-12">
-                <form id="project_upsert">
+        <div class="panel">
+            <div class="row ">
+                <div class="col-md-12 ">
+                    <form id="project_upsert" class="panel-body">
 
-                    <fieldset>
+                        <fieldset>
 
-                        <div ng-show="model._id" class="form-group">
-                            <label for="_id"># ID</label>
-                            <input type="text" class="form-control" ng-model="model._id">
-                        </div>
-                        <div class="form-group">
-                            <label for="Name">Name</label>
-                            <input type="text" class="form-control" ng-model="model.name">
-                        </div>
+                            <div ng-show="model._id" class="form-group">
+                                <label for="_id"># ID</label>
+                                <input type="text" class="form-control" ng-model="model._id">
+                            </div>
+                            <div class="form-group">
+                                <label for="Name">Name</label>
+                                <input type="text" class="form-control" ng-model="model.name">
+                            </div>
 
-                        <div class="form-group">
-                            <label for="Type">Type</label>
-                            <input type="text" class="form-control" ng-model="model.type">
-                        </div>
+                            <div class="form-group">
+                                <label for="Type">Type</label>
+                                <input type="text" class="form-control" ng-model="model.type">
+                            </div>
 
-                        <div class="form-group">
-                            <label for="Name">Location</label>
-                            <input type="text" class="form-control" ng-model="model.location">
-                        </div>
-
-
-                        <button ng-click="save(model)" class="btn btn-sm btn-success">
-                            <i class="fa fa-save">
-                            </i>
-                            Save
-                        </button>
-                        <button ng-click="remove()" ng-show="model._id" class="btn btn-sm btn-danger">
-                            <i class="fa fa-remove">
-                            </i>
-                            Remove
-                        </button>
-
-                        <button ng-click="clear()" ng-hide="model._id" class="btn btn-sm btn-warning">
-                            <i class="fa fa-refresh">
-                            </i>
-                            Clear
-                        </button>
-                        <button ng-click="clear()" ng-show="model._id" class="btn btn-sm btn-info">
-                            <i class="fa fa-refresh">
-                            </i>
-                            Back
-                        </button>
+                            <div class="form-group">
+                                <label for="Name">Location</label>
+                                <input type="text" class="form-control" ng-model="model.location">
+                            </div>
 
 
-                    </fieldset>
+                            <button ng-click="save(model)" class="btn btn-sm btn-success">
+                                <i class="fa fa-save">
+                                </i>
+                                Save
+                            </button>
+                            <button ng-click="remove()" ng-show="model._id" class="btn btn-sm btn-danger">
+                                <i class="fa fa-remove">
+                                </i>
+                                Remove
+                            </button>
 
-                </form>
+                            <button ng-click="clear()" ng-hide="model._id" class="btn btn-sm btn-warning">
+                                <i class="fa fa-refresh">
+                                </i>
+                                Clear
+                            </button>
+                            <button ng-click="clear()" ng-show="model._id" class="btn btn-sm btn-info">
+                                <i class="fa fa-refresh">
+                                </i>
+                                Back
+                            </button>
+
+
+                        </fieldset>
+
+                    </form>
+                </div>
             </div>
         </div>
-
-        <hr />
-        <div ng-hide="model._id" class="datalist">
+        <div ng-hide="model._id" class="datalist panel bg-gray">
 
             <div class="row">
                 <div class="col-md-12">
+                    <div class="panel-body">
+                        <table id="list" class="table table-bordered table-stripped">
 
-                    <table id="list" class="table table-bordered table-stripped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Location</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in getPage(currentPage)">
 
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Location</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="item in getPage(currentPage)">
+                                    <td>
+                                        {{ item.name }}
+                                    </td>
 
-                                <td>
-                                    {{ item.name }}
-                                </td>
+                                    <td>
+                                        {{ item.type }}
+                                    </td>
 
-                                <td>
-                                    {{ item.type }}
-                                </td>
+                                    <td>
+                                        {{ item.location }}
+                                    </td>
+                                    <td>
+                                        <button ng-click="edit(item)" class="btn btn-sm btn-primary">
+                                            <i class="fa fa-edit"></i>   Edit
+                                        </button>
+                                        <button ng-click="remove(item)" class="btn btn-sm btn-danger">
+                                            <i class="fa fa-remove"></i>   Remove
+                                        </button>
+                                    </td>
 
-                                <td>
-                                    {{ item.location }}
-                                </td>
-                                <td>
-                                    <button ng-click="edit(item)" class="btn btn-sm btn-primary">
-                                        <i class="fa fa-edit"></i>   Edit
-                                    </button>
-                                    <button ng-click="remove(item)" class="btn btn-sm btn-danger">
-                                        <i class="fa fa-remove"></i>   Remove
-                                    </button>
-                                </td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                            </tr>
-                        </tbody>
-                    </table>
-
-
+                    </div>
 
                 </div>
             </div>
 
 
 
-            <nav>
+            <div class="footer-center">
                 <ul class="pagination">
                     <li>
                         <a href="#" aria-label="Previous">
@@ -132,19 +132,20 @@
                     </li>
                 </ul>
 
-            </nav>
-            <label class="">Total Items : {{ items.length }} </label>
+
+                <label class="">Total Items : {{ items.length }} </label>
 
 
-            <div class="row">
-                <div class="col-xs-4">
-                    <label for="pageSize">Page size</label>
-                    <input type="number" id="pageSize" class="form-control" ng-model="pageSize" />
+         
+                    <div class="">
+                        <label for="pageSize">Page size</label>
+                        <input  type="number" id="pageSize" class="form-control" ng-model="pageSize" />
+                    </div>
+
+                    <div class="">
+                    </div>
+
                 </div>
-
-                <div class="col-xs-4">
-                </div>
-
             </div>
         </div>
 
