@@ -21,7 +21,6 @@
                         <form id="project_upsert">
                             <fieldset>
 
-
                                 <div ng-show="model._id" class="form-group">
                                     <label for="_id"># ID</label>
                                     <input type="text" class="form-control" ng-model="model._id" />
@@ -203,7 +202,7 @@
                             <input type="text" class="form-control" disabled value="{{analytics.totalSalary | currency :'T ' : 0}}" />
                         </div>
 
-                        <div ng-hide="search.startDate || search.endDate" class="col-md-4">
+                        <!--<div ng-hide="search.startDate || search.endDate" class="col-md-4">
                             <label>
                                 Total paid salary
                             </label>
@@ -216,7 +215,7 @@
                                 Total unpaid salary
                             </label>
                             <input type="text" class="form-control" disabled value="{{analytics.totalUnpaidSalary  | currency :'T ' : 0}}" />
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>

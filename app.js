@@ -13,6 +13,10 @@ var mongo = require('mongodb');
 var mongoose = require('mongoose');
 var viewEng = require('ejs-mate');
 var mongoCnStr = 'mongodb://localhost:27017/arxe';
+var MongoStore = require('connect-mongo')(session);
+var mongoStore = new MongoStore({ url: mongoCnStr })
+
+
 
 mongoose.Promise = global.Promise;
 
@@ -45,10 +49,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Express Session
 app.use(session({
+
     secret: 'secret',
-    saveUninitialized: true,
-    resave: true
+    key: 'express.sid',
+    store: mongoStore,
+    resave: true,
+    saveUninitialized: true
+
 }));
+
 
 // Passport init
 app.use(passport.initialize());

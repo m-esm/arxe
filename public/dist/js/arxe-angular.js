@@ -74,8 +74,6 @@ var use_projects = function ($scope, $http) {
     });
 }
 
-
-
 var use_pager = function ($scope) {
     $scope.currentPage = 1;
     $scope.pageSize = 10;
@@ -165,7 +163,6 @@ var use_curd = function ($scope, $http, api_prefix) {
             detailsList.append("<div><b>" + key + " :</b><i> " + value + "</i></div>");
         });
 
-        console.log(model);
 
 
         swal({
@@ -180,7 +177,6 @@ var use_curd = function ($scope, $http, api_prefix) {
         },
             function (isConfirm) {
 
-                console.log("isconfirm", isConfirm);
 
                 if (isConfirm) {
 
@@ -300,6 +296,41 @@ fundsApp.controller('main', function ($scope, $http) {
     use_persons($scope, $http);
     use_projects($scope, $http);
     use_curd($scope, $http, '/api/funds');
+    $scope.toPayItems = [];
+
+    $http.post('/api/analytics/salary', { all: true }).then(function (res) {
+
+        console.log("user salary", res.data);
+
+        $scope.analytics = res.data;
+
+        _.keys(res.data.users).forEach(function (item, index) {
+
+            var userSalary = res.data.users[item];
+
+
+            $scope.toPayItems.push({
+                description: "پرداخت نشده تایم شیت",
+                personId: item,
+                price: userSalary.userSalary * -1,
+                dateJalali: moment().format('jYYYY/jMM/jDD'),
+                date: moment().format('YYYY/MM/DD')
+            });
+
+        });
+
+        setTimeout(function () {
+            $scope.$apply();
+            initTables();
+
+        }, 100);
+
+
+    }, function (res) {
+        console.error('error getting salary analyticks', res);
+    });
+
+
 
     $scope.getPerson = function (_id) {
         return _.findWhere($scope.persons, { _id: _id });
@@ -307,6 +338,7 @@ fundsApp.controller('main', function ($scope, $http) {
     $scope.getProject = function (_id) {
         return _.findWhere($scope.projects, { _id: _id });
     };
+
 
 
     $scope.$watch('model.dateJalali', function (newVal, oldVal) {
@@ -330,6 +362,175 @@ fundsApp.controller('main', function ($scope, $http) {
 
     };
 
+    $scope.fund = {
+        cash: 0,
+        expense: 0,
+        income: 0
+    };
+
+    $scope.personBalance = [];
+    $scope.projectBalance = [];
+    var initTables = function () {
+
+        $scope.personBalance = [];
+        $scope.projectBalance = [];
+
+        if ($scope.real_items == false || $scope.real_items == undefined)
+            $scope.real_items = $scope.items;
+
+        if ($scope.persons && $scope.toPayItems)
+            $scope.persons.forEach(function (item, index) {
+
+
+                var personBalance = _.reduce(_.where($scope.items, { personId: item._id }), function (memo, item) {
+
+                    return memo + item.price;
+
+                }, 0);
+                var salary = _.findWhere($scope.toPayItems, {
+                    personId: item._id
+                });
+
+
+
+                if (salary)
+                    personBalance = personBalance + salary.price;
+
+
+                $scope.personBalance.push({
+                    name: item.name,
+                    balance: personBalance
+
+                });
+
+            });
+
+        $scope.personBalanceSum = _.reduce($scope.personBalance, function (memo, item) {
+
+            return memo + item.balance;
+
+        }, 0);
+
+
+
+        if ($scope.projects)
+            $scope.projects.forEach(function (item, index) {
+
+                var _balance = _.reduce(_.where($scope.items, { projectId: item._id }), function (memo, _item) {
+
+                    return memo + _item.price;
+
+                }, 0);
+
+                if ($scope.analytics)
+                    if ($scope.analytics.projects[item._id])
+                        _balance -= $scope.analytics.projects[item._id];
+
+                $scope.projectBalance.push({
+                    name: item.name,
+                    balance: _balance
+                });
+
+            });
+
+
+        $scope.fund.cash = _.reduce($scope.items, function (memo, item) {
+
+            if (item.projectId)
+                return memo + item.price;
+
+            if (item.personId)
+                if (item.price > 0)
+                    return memo - item.price;
+
+            return memo;
+
+        }, 0);
+
+        //$scope.fund.expense = _.reduce($scope.items, function (memo, item) {
+
+        //    if (item.price < 0)
+        //        return memo + item.price;
+        //    else
+        //        return memo;
+
+        //}, 0);
+
+
+        //$scope.fund.income = _.reduce($scope.items, function (memo, item) {
+
+        //    if (item.price > 0)
+        //        return memo + item.price;
+        //    else
+        //        return memo;
+
+        //}, 0);
+
+
+        setTimeout(function () {
+            $scope.$apply();
+        }, 500);
+
+
+    };
+    $scope.$watch('items', function (newVal) {
+
+        initTables();
+
+
+
+    });
+
+
+    $scope.search_items = function () {
+
+
+        if ($scope.real_items == false || $scope.real_items == undefined)
+            $scope.real_items = $scope.items;
+
+
+
+        $scope.items = _.filter($scope.items, function (item) {
+
+            var item_date_jalali = parseInt(item.dateJalali.replaceAll('/', ''));
+
+            if ($scope.search == undefined)
+                return true;
+
+            if ($scope.search.startDate != '' && $scope.search.startDate != undefined)
+                if ((item_date_jalali - parseInt($scope.search.startDate.replaceAll('/', ''))) < 0)
+                    return false;
+
+            if ($scope.search.endDate != '' && $scope.search.endDate != undefined)
+                if ((item_date_jalali - parseInt($scope.search.endDate.replaceAll('/', ''))) > 0)
+                    return false;
+
+
+            if ($scope.search.projectId != undefined)
+                if ($scope.search.projectId != item.projectId)
+                    return false;
+
+            if ($scope.search.personId != undefined)
+                if ($scope.search.personId != item.personId)
+                    return false;
+
+            if ($scope.search.personal)
+                return item.personal;
+
+            return true;
+
+        });
+
+
+    };
+
+    $scope.cancel_search = function () {
+        $scope.items = $scope.real_items
+        $scope.real_items = false;
+        $scope.search = {};
+
+
+    };
     $scope.clear();
 
 });
@@ -435,6 +636,7 @@ timesheetsApp.controller('main', function ($scope, $http) {
     $scope.getPerson = function (_id) {
         return _.findWhere($scope.persons, { _id: _id });
     };
+
     $scope.getProject = function (_id) {
         return _.findWhere($scope.projects, { _id: _id });
     };
@@ -460,7 +662,6 @@ timesheetsApp.controller('main', function ($scope, $http) {
             personId: $scope.user._id
         };
 
-        console.log($scope.model);
 
         setTimeout(function () {
             $scope.$apply();
@@ -478,6 +679,7 @@ timesheetsApp.controller('main', function ($scope, $http) {
 
     $scope.$watch('items', function (newVal) {
 
+        console.log("item change");
 
 
         $scope.totalHours = _.reduce($scope.items, function (memo, item) {
@@ -502,7 +704,6 @@ timesheetsApp.controller('main', function ($scope, $http) {
             if (item.personal.indexOf(':') == -1)
                 return memo;
 
-            console.log(item.personal);
 
             return memo + time_diffrence('00:00', item.personal).totalHour;
 
@@ -513,6 +714,7 @@ timesheetsApp.controller('main', function ($scope, $http) {
             return item._id;
         });
 
+
         if (postData.length == 0)
             return;
 
@@ -520,7 +722,14 @@ timesheetsApp.controller('main', function ($scope, $http) {
 
         $http.post('/api/analytics/salary', postData).then(function (res) {
 
+            console.log(res.data);
+
             $scope.analytics = res.data;
+
+
+            setTimeout(function () {
+                $scope.$apply();
+            }, 2);
 
         }, function (res) {
             console.error('error getting salary analyticks', res);
@@ -543,7 +752,11 @@ timesheetsApp.controller('main', function ($scope, $http) {
 
 
     $scope.edit = function (model) {
+    
         $scope.model = model;
+
+        
+
         $scope.model.dateJalali = moment($scope.model.date).format('jYYYY/jMM/jDD');
     };
 

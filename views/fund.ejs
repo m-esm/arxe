@@ -110,10 +110,90 @@
 
         <div ng-hide="model._id" class="datalist">
 
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4> <i class="fa fa-search"></i> Search data list</h4>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="Name">person</label>
+                            <select class="form-control" ng-model="search.personId" ng-options="person._id as person.name for person in persons"></select>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="Name">project</label>
+                            <select class="form-control" ng-disabled="search.personal" ng-model="search.projectId" ng-options="project._id as project.name for project in projects"></select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>start date</label>
+                            <input type="text" class="form-control datepicker shamsi-mask" ng-model="search.startDate" />
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>end date</label>
+                            <input type="text" class="form-control datepicker shamsi-mask" ng-model="search.endDate" />
+
+
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <br />
+
+                            <!--<button ng-hide="!real_items" ng-click="search_items()" class="btn btn-sm btn-success">
+                        <i class="fa fa-search"></i>
+                        Again
+                    </button>-->
+
+
+                            <button ng-hide="real_items" ng-click="search_items()" class="btn btn-sm btn-success">
+                                <i class="fa fa-search"></i>
+                                Search
+                            </button>
+
+                            <button ng-show="real_items" ng-click="cancel_search()" class="btn btn-sm btn-danger">
+                                <i class="fa fa-close"></i>
+                                Cancel
+                            </button>
+
+                        </div>
+                    </div>
+
             <div class="row">
                 <div class="col-md-12">
+                    <h4> <i class="fa fa-info"></i> Brief financial analytics <small>in filtered data</small></h4>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                        Balance
+                    </label>
+                    <input type="text" class="form-control" disabled value="{{fund.cash | currency :'T ' : 0}}" />
+                </div>
 
-                    <table id="list" class="table table-bordered table-stripped">
+                <!--<div ng-hide="search.startDate || search.endDate" class="col-md-4">
+                    <label>
+                        Payed
+                    </label>
+                    <input type="text" class="form-control" disabled value="{{fund.income | currency :'T ' : 0}}" />
+                </div>
+
+                <div ng-hide="search.startDate || search.endDate" class="col-md-4">
+
+                    <label>
+                      expanse
+                    </label>
+                    <input type="text" class="form-control" disabled value="{{ fund.expense | currency :'T ' : 0}}" />
+                </div>-->
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="list" class="table table-bordered table-stripped bg-gray">
 
                         <thead>
                             <tr>
@@ -128,7 +208,7 @@
                             <tr ng-repeat="item in getPage(currentPage)">
 
                                 <td>
-                                    {{ item.price }}
+                                    {{ item.price | currency :'T ' : 0}}
                                 </td>
 
                                 <td>
@@ -144,12 +224,17 @@
                                 </td>
 
                                 <td>
-                                    <button ng-click="edit(item)" class="btn btn-sm btn-primary">
+                                    <button ng-show="item._id" ng-click="edit(item)" class="btn btn-sm btn-primary">
                                         <i class="fa fa-edit"></i>   Edit
                                     </button>
-                                    <button ng-click="remove(item)" class="btn btn-sm btn-danger">
+                                    <button ng-show="item._id" ng-click="remove(item)" class="btn btn-sm btn-danger">
                                         <i class="fa fa-remove"></i>   Remove
                                     </button>
+
+                                    <span ng-hide="item._id">
+                                        from timesheets
+                                    </span>
+
                                 </td>
 
                             </tr>
@@ -160,6 +245,7 @@
 
                 </div>
             </div>
+
 
 
 
@@ -195,6 +281,115 @@
 
             </nav>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Projects</h2>
+
+                <table id="list" class="table table-bordered table-stripped bg-gray">
+
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in projectBalance">
+
+                            <td>
+                                {{ item.name }}
+                            </td>
+
+                            <td>
+                                {{ item.balance | currency :'T ' : 0 }}
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Persons</h2>
+
+                <table id="list" class="table table-bordered table-stripped bg-gray">
+
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in personBalance">
+
+                            <td>
+                                {{ item.name }}
+                            </td>
+
+                            <td>
+                                {{ item.balance  | currency :'T ' : 0 }}
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;">
+                                Sum :
+                            </td>
+                            <td>
+                                {{ personBalanceSum  | currency :'T ' : 0 }}
+
+                               
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+            </div>
+        </div>
+
+        <!--<div class="row">
+            <div class="col-md-12">
+                <h2>Salary To pay</h2>
+
+                <table id="list" class="table table-bordered table-stripped bg-gray">
+
+                    <thead>
+                        <tr>
+                            <th>Person</th>
+
+                            <th>Amount</th>
+                            <th>Until</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in toPayItems">
+
+                            <td>
+                                {{ getPerson(item.personId).name }}
+                            </td>
+                            <td>
+                                {{ item.price * -1| currency :'T ' : 0 }}
+                            </td>
+
+                            <td>
+                                {{ item.dateJalali }}
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+            </div>
+        </div>-->
 
 
     </div>

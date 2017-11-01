@@ -107,6 +107,8 @@ router.post('/api/users/remove', middles.authorize, function (req, res) {
 
 
 });
+
+
 router.post('/api/users/upsert', middles.authorize, function (req, res) {
 
     if (req.user.role != 'admin')
@@ -187,6 +189,7 @@ router.get('/api/funds', middles.authorize, function (req, res) {
 
 
 });
+
 router.post('/api/funds/remove', middles.authorize, function (req, res) {
 
     if (req.user.role != 'admin')
@@ -204,6 +207,7 @@ router.post('/api/funds/remove', middles.authorize, function (req, res) {
 
 
 });
+
 router.post('/api/funds/upsert', middles.authorize, function (req, res) {
 
     if (req.user.role != 'admin')
@@ -367,8 +371,6 @@ router.post('/api/timesheets/upsert', middles.authorize, function (req, res) {
     if (!req.body._id)
         req.body._id = new mongoose.mongo.ObjectID();
 
-    if (req.body.personal)
-        req.body = _.omit(req.body, "projectId");
 
     Timesheet.findOneAndUpdate({ _id: req.body._id }, { $set: _.omit(req.body, ["_id", '__v']) }, { upsert: true, 'new': true }, function (err, model) {
 
@@ -388,6 +390,8 @@ router.post('/api/timesheets/upsert', middles.authorize, function (req, res) {
 router.post('/api/analytics/salary', middles.authorize, function (req, res) {
 
     var itemsIds = req.body;
+
+
     var _wages = [];
     var _funds = [];
     var _locations = [];
@@ -395,7 +399,27 @@ router.post('/api/analytics/salary', middles.authorize, function (req, res) {
         totalSalary: 0,
         totalPaidSalary: 0,
         totalUnpaidSalary: 0,
+        users: {},
+        projects: {}
     };
+
+    function _getTSids(callback) {
+
+        if (req.body.all == undefined)
+            return callback();
+     
+        Timesheet.find({},"_id").then(function (docs, err) {
+
+            itemsIds = _.map(docs, function (item) {
+
+                return item._id;
+
+            });
+
+            callback();
+        });
+
+    }
 
     function _getFunds(callBack) {
         Fund.find({}, function (fundErr, funds) {
@@ -420,12 +444,15 @@ router.post('/api/analytics/salary', middles.authorize, function (req, res) {
 
     function mainQuery(callback) {
 
+        console.log("salary req for " + itemsIds.length);
+
         Timesheet.find(
             {
                 _id: {
                     $in: itemsIds
                 }
             },
+
 
             function (err, timeSheets) {
 
@@ -437,19 +464,35 @@ router.post('/api/analytics/salary', middles.authorize, function (req, res) {
 
                 _.keys(timeSheetsPerUser).forEach(function (personId, tsUserIndex) {
 
+                  
+                    var _userUnpaid = 0;
                     var _userSalary = 0;
                     var _userPaid = _.reduce(
                         _.where(
                             _funds, {
                                 personId: personId
                             }), function (memo, fund) {
-                                return memo + fund.price;
+
+                                if (fund.price > 0)
+                                    return memo + fund.price;
+                                else
+                                    return memo;
+
                             }, 0);
+
+                    if (!analytics.users[personId])
+                        analytics.users[personId] = {
+                            userPaid: _userPaid,
+                            userSalary: _userSalary,
+                            userUnpaid: _userUnpaid
+                        };
+
+
+                 
+
 
                     analytics.totalPaidSalary += _userPaid;
 
-
-                    var _userUnpaid = 0;
 
                     timeSheetsPerUser[personId].forEach(function (ts, tsIndex) {
 
@@ -498,13 +541,26 @@ router.post('/api/analytics/salary', middles.authorize, function (req, res) {
 
                         var workingTime = time_diffrence(ts.start, ts.end).totalHour - time_diffrence('00:00', ts.personal).totalHour;
 
+                        if (!location)
+                            location = {
+                                plusCost: 0
+                            };
+
 
                         if (userWage.perHour)
-                            analytics.totalSalary += (userWage.perHour + location.plusCost) * workingTime;
+                            _userSalary = (userWage.perHour + location.plusCost) * workingTime;
 
+                        if (!analytics.projects[ts.projectId])
+                            analytics.projects[ts.projectId] = 0
 
+                        analytics.projects[ts.projectId] += _userSalary;
+                        analytics.totalSalary += _userSalary;
 
-                        console.log(analytics, userWage.perHour, location.plusCost, workingTime);
+                        analytics.users[personId].userSalary += _userSalary;
+
+                        _userUnpaid = _userSalary - _userPaid;
+
+                        //      console.log(analytics, userWage.perHour, location.plusCost, workingTime);
 
                     });
 
@@ -522,16 +578,17 @@ router.post('/api/analytics/salary', middles.authorize, function (req, res) {
 
 
     }
+    _getTSids(function () {
+        _getFunds(function () {
+            _getWages(function () {
 
-    _getFunds(function () {
-        _getWages(function () {
+                _getLocations(function () {
 
-            _getLocations(function () {
+                    mainQuery();
 
-                mainQuery();
+                });
 
             });
-
         });
     });
 
