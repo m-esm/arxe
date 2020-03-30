@@ -382,6 +382,7 @@ fundsApp.controller('main', function ($scope, $http) {
             $scope.persons.forEach(function (item, index) {
 
 
+                
                 var personBalance = _.reduce(_.where($scope.items, { personId: item._id }), function (memo, item) {
 
                     return memo + item.price;
@@ -390,7 +391,6 @@ fundsApp.controller('main', function ($scope, $http) {
                 var salary = _.findWhere($scope.toPayItems, {
                     personId: item._id
                 });
-
 
 
                 if (salary)

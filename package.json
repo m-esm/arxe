@@ -4,7 +4,10 @@
   "description": "small erp",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "dev:front": "cd public && gulp dev",
+    "build:front": "cd public && gulp",
+    "dev:back": "nodemon app.js"
   },
   "author": "Mohsen Esmaeli",
   "license": "MIT",
@@ -12,21 +15,30 @@
     "bcryptjs": "*",
     "body-parser": "*",
     "connect-flash": "*",
+    "connect-mongo": "^3.2.0",
     "cookie-parser": "^1.4.1",
     "ejs-mate": "^2.3.0",
     "express": "*",
     "express-messages": "*",
     "express-session": "*",
-    "express-validator": "*",
+    "express-validator": "^5.3.0",
+    "moment": "*",
     "mongodb": "*",
     "mongoose": "*",
     "passport": "*",
     "passport-http": "*",
     "passport-local": "*",
-    "moment": "*",
     "underscore": "*"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-header": "^2.0.9",
+    "gulp-less": "^4.0.1",
+    "gulp-rename": "^2.0.0",
+    "gulp-uglify": "^3.0.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/m-esm/arxe.git"

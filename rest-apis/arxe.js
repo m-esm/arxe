@@ -407,8 +407,8 @@ router.post('/api/analytics/salary', middles.authorize, function (req, res) {
 
         if (req.body.all == undefined)
             return callback();
-     
-        Timesheet.find({},"_id").then(function (docs, err) {
+
+        Timesheet.find({}, "_id").then(function (docs, err) {
 
             itemsIds = _.map(docs, function (item) {
 
@@ -464,21 +464,21 @@ router.post('/api/analytics/salary', middles.authorize, function (req, res) {
 
                 _.keys(timeSheetsPerUser).forEach(function (personId, tsUserIndex) {
 
-                  
+
                     var _userUnpaid = 0;
                     var _userSalary = 0;
                     var _userPaid = _.reduce(
                         _.where(
                             _funds, {
-                                personId: personId
-                            }), function (memo, fund) {
+                            personId: personId
+                        }), function (memo, fund) {
 
-                                if (fund.price > 0)
-                                    return memo + fund.price;
-                                else
-                                    return memo;
+                            if (fund.price > 0)
+                                return memo + fund.price;
+                            else
+                                return memo;
 
-                            }, 0);
+                        }, 0);
 
                     if (!analytics.users[personId])
                         analytics.users[personId] = {
@@ -488,7 +488,7 @@ router.post('/api/analytics/salary', middles.authorize, function (req, res) {
                         };
 
 
-                 
+
 
 
                     analytics.totalPaidSalary += _userPaid;
@@ -507,9 +507,6 @@ router.post('/api/analytics/salary', middles.authorize, function (req, res) {
                             ts.dateJalali += part.trim().padStart(2, 0);
                         });
 
-                        //    console.log(' ts.dateJalali', ts.dateJalali);
-                        var tsJalaliNumber = parseInt(ts.dateJalali);
-
 
                         var userWages = _.map(_.where(_wages, {
                             personId: ts.personId
@@ -518,18 +515,7 @@ router.post('/api/analytics/salary', middles.authorize, function (req, res) {
                             return item;
                         });
 
-                        var userWage = _.min(userWages, function (item) {
-
-                            var temp2 = item.startJalali.toString().split('/');
-                            item.startJalali = "";
-                            temp2.forEach(function (part, partIndex) {
-                                item.startJalali += part.padStart(2, 0);
-                            });
-
-
-                            return tsJalaliNumber - parseInt(item.startJalali);
-
-                        });
+                        const userWage = userWages.find(p => moment(ts.date).isAfter(p.start));
 
 
                         var location = _.find(_locations, {

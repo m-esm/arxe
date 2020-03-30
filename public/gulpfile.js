@@ -5,22 +5,15 @@ var header = require('gulp-header');
 var cleanCSS = require('gulp-clean-css');
 var rename = require("gulp-rename");
 var uglify = require('gulp-uglify');
-var pkg = require('./package.json');
+// var pkg = require('./package.json');
 
-// Set the banner content
-var banner = ['/*!\n',
-    ' * Start Bootstrap - <%= pkg.title %> v<%= pkg.version %> (<%= pkg.homepage %>)\n',
-    ' * Copyright 2013-' + (new Date()).getFullYear(), ' <%= pkg.author %>\n',
-    ' * Licensed under <%= pkg.license.type %> (<%= pkg.license.url %>)\n',
-    ' */\n',
-    ''
-].join('');
+ 
 
 // Compile LESS files from /less into /css
 gulp.task('less', function() {
     return gulp.src('less/sb-admin-2.less')
         .pipe(less())
-        .pipe(header(banner, { pkg: pkg }))
+       
         .pipe(gulp.dest('dist/css'))
         .pipe(browserSync.reload({
             stream: true
@@ -40,8 +33,7 @@ gulp.task('minify-css', ['less'], function() {
 
 // Copy JS to dist
 gulp.task('js', function() {
-    return gulp.src(['js/sb-admin-2.js'])
-        .pipe(header(banner, { pkg: pkg }))
+    return gulp.src(['js/sb-admin-2.js']) 
         .pipe(gulp.dest('dist/js'))
         .pipe(browserSync.reload({
             stream: true
@@ -51,8 +43,7 @@ gulp.task('js', function() {
 // Minify JS
 gulp.task('minify-js', ['js'], function() {
     return gulp.src('js/sb-admin-2.js')
-        .pipe(uglify())
-        .pipe(header(banner, { pkg: pkg }))
+        .pipe(uglify()) 
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest('dist/js'))
         .pipe(browserSync.reload({
