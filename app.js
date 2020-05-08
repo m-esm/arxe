@@ -12,7 +12,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
 var viewEng = require('ejs-mate');
-var mongoCnStr = 'mongodb://localhost:27017/arxe';
+var mongoCnStr = process.env['MONGODB'] || 'mongodb://localhost:27017/arxe';
 var MongoStore = require('connect-mongo')(session);
 var mongoStore = new MongoStore({ url: mongoCnStr })
 
